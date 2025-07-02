@@ -1,9 +1,18 @@
-import Image from "next/image";
+"use client";
+import ImageSlider from "@/components/layouts/ImageSlider";
+import FeaturedProducts from '@/components/layouts/FeaturedProducts';
+
+
 
 export default function Home() {
   return (
     <>
-     <p>Welcome !</p>
+      <div className="m-5">
+        <ImageSlider></ImageSlider>
+      </div>
+      <div>
+        <FeaturedProducts/>
+      </div>
     </>
   );
 }
