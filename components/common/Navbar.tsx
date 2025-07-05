@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
   function toCamelCase(str: string) {
     return str
       .replace(/\s(.)/g, (match, group1) => group1.toUpperCase())
@@ -23,8 +26,21 @@ export default function Navbar() {
 
   const profileLinks = ["View Orders", "Logout"];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 600);   
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-grey shadow-md">
+    <header
+      className={`fixed top-0 z-50 w-full transition-colors duration-300 ${
+        scrolled ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
       <nav className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="rounded-full overflow-hidden w-10 h-10 me-3">
@@ -48,7 +64,9 @@ export default function Navbar() {
               href={`/${
                 label.toLowerCase() === "home" ? "" : label.toLowerCase()
               }`}
-              className="text-[#eac90b] hover:text-black hover: transition font-medium"
+              className={`${
+                scrolled ? "text-black" : "text-[#eac90b]"
+              } hover:text-black transition hover:underline-offset-2 font-medium`}
             >
               {label}
             </Link>
@@ -56,13 +74,10 @@ export default function Navbar() {
         </div>
 
         <div className="flex space-x-9 items-center">
-          <div>
-            <Link href={"/cart"}>
+          <Link href={"/cart"}>
             <ShoppingCart />
-            </Link>
-            
-            
-          </div>
+          </Link>
+
           <div className="mt-2">
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -76,13 +91,15 @@ export default function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {profileLinks.map((item) => (
-                  <div key={item}>
-                    <DropdownMenuItem className="text-[#eac90b]">
-                      <Link key={item} href={item === "View Orders"?"/orders":toCamelCase(item)}>
-                        {item}
-                      </Link>
-                    </DropdownMenuItem>
-                  </div>
+                  <DropdownMenuItem key={item} className="text-[#eac90b]">
+                    <Link
+                      href={
+                        item === "View Orders" ? "/orders" : toCamelCase(item)
+                      }
+                    >
+                      {item}
+                    </Link>
+                  </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
