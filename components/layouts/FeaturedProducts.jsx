@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import {  Star } from 'lucide-react';
 import { ProductCard } from '../common/ProductCard';
-
+import {useAllProducts} from "../../hooks/CustomHooks/useAllProducts"
+import { div, p, ul } from 'framer-motion/client';
 const products = [
   {
     id: 1,
@@ -73,16 +74,15 @@ const products = [
 ];
 
 export default function FeaturedProducts() {
+  const {data:product,isLoading}=useAllProducts()
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % products.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
-    console.log("clicked")
-  };
+  
+  if(isLoading)
+  {
+    return <p>...Loading</p>
+  }
+  console.log(product.data)
+  
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -96,7 +96,8 @@ export default function FeaturedProducts() {
   {
     console.log("Added to cart")
   }
-
+  
+  
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-12">
       <div className="text-center mb-12">
@@ -123,9 +124,9 @@ export default function FeaturedProducts() {
       <div className="relative">
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.slice(0, 4).map((product) => (
+        {product?.data?.slice(0, 4).map((product) => (
           <ProductCard 
-            key={product.id} 
+            key={product._id} 
             product={product} 
             onAddToCart={handleAddToCart}
           />

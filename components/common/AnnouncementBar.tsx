@@ -1,7 +1,4 @@
 'use client';
-
-import { useEffect, useState } from 'react';
-
 const messages = [
   '🚚 Free shipping on orders over ₹500!',
   '🔥 Flat 20% OFF on first purchase – Use code FIRST20',

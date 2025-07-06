@@ -31,13 +31,12 @@ export default function RootLayout({
       >
         <main>
           <ReactQuery>
-            
             <Navbar/>
               {children}
           </ReactQuery>
     
         </main>
-        
+
       </body>
     </html>
   );
