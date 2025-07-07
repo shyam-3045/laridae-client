@@ -4,74 +4,7 @@ import { useState } from 'react';
 import {  Star } from 'lucide-react';
 import { ProductCard } from '../common/ProductCard';
 import {useAllProducts} from "../../hooks/CustomHooks/useAllProducts"
-import { div, p, ul } from 'framer-motion/client';
-const products = [
-  {
-    id: 1,
-    name: "Chamomile Mint Citrus Green Tea, 50 Count",
-    category: "Tea Bags | 50 Cups",
-    price: 600,
-    originalPrice: 750,
-    reviews: 29,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "BEST SELLER"
-  },
-  {
-    id: 2,
-    name: "Himalayan Green Tea, 100g",
-    category: "Loose Leaf | 50 cups",
-    price: 349,
-    originalPrice: 450,
-    reviews: 51,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "WEBSITE EXCLUSIVE"
-  },
-  {
-    id: 3,
-    name: "Turmeric Ashwagandha Herbal Tea Tisane, 50...",
-    category: "Tea Bags | 50 Cups",
-    price: 600,
-    originalPrice: 800,
-    reviews: 8018,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "BEST SELLER"
-  },
-  {
-    id: 4,
-    name: "Darjeeling Summer Black Tea, 50 Count",
-    category: "Tea Bags | 50 Cups",
-    price: 650,
-    originalPrice: 850,
-    reviews: 80,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "WEBSITE EXCLUSIVE"
-  }, {
-    id: 5,
-    name: "Chamomile Mint Citrus Green Tea, 50 Count",
-    category: "Tea Bags | 50 Cups",
-    price: 600,
-    originalPrice: 750,
-    reviews: 29,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "BEST SELLER"
-  },
-   {
-    id: 6,
-    name: "Chamomile Mint Citrus Green Tea, 50 Count",
-    category: "Tea Bags | 50 Cups",
-    price: 600,
-    originalPrice: 750,
-    reviews: 29,
-    rating: 5,
-    image: "/api/placeholder/300/300",
-    badge: "BEST SELLER"
-  },
-];
+
 
 export default function FeaturedProducts() {
   const {data:product,isLoading}=useAllProducts()
@@ -81,7 +14,7 @@ export default function FeaturedProducts() {
   {
     return <p>...Loading</p>
   }
-  console.log(product.data)
+  
   
 
   const renderStars = (rating) => {

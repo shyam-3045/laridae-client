@@ -2,13 +2,14 @@ import HeroSection from "@/components/layouts/HeroSection";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import AnimatedOnScroll from "@/components/common/AddScrollAnimations";
 import FeaturedProducts from "../components/layouts/FeaturedProducts";
-import getQueryClient from "./utils/queryClient";
+import getQueryClient from "../utils/queryClient";
 import { getAllProducts } from "@/hooks/services/getAllProducts";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export const revalidate=300;
 
 export default async function Home() {
+  
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({

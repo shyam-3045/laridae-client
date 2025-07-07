@@ -3,7 +3,7 @@ import { Geist } from "next/font/google";
 import { Inter } from 'next/font/google'
 import "./globals.css";
 import ReactQuery from "@/lib/providers/tanstackQuerry.provider";
-import Navbar from "@/components/common/Navbar";
+import NavbarSwitcher from "@/components/common/navbar/NavbarSwitcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <main>
           <ReactQuery>
-            <Navbar/>
+            <NavbarSwitcher/>
               {children}
           </ReactQuery>
     
