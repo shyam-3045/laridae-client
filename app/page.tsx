@@ -5,6 +5,7 @@ import FeaturedProducts from "../components/layouts/FeaturedProducts";
 import getQueryClient from "../utils/queryClient";
 import { getAllProducts } from "@/hooks/services/getAllProducts";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import Link from "next/link";
 
 export const revalidate=300;
 
@@ -21,7 +22,10 @@ export default async function Home() {
 
   return (
     <div>
+      <Link href={'/shop'}>
       <HeroSection />
+      </Link>
+      
       <AnnouncementBar />
       <AnimatedOnScroll>
         <div className="mt-9">
