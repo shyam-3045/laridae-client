@@ -18,7 +18,7 @@ const ShopPage = () => {
             </div>
         )
     }
-    console.log(product.data)
+   
   return (
     <>
     <div className="min-h-screen bg-white">

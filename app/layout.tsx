@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import "./globals.css";
 import ReactQuery from "@/lib/providers/tanstackQuerry.provider";
 import NavbarSwitcher from "@/components/common/navbar/NavbarSwitcher";
+import ToastProvider from "@/lib/providers/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <main>
           <ReactQuery>
+            <ToastProvider/>
             <NavbarSwitcher/>
               {children}
           </ReactQuery>

@@ -1,5 +1,7 @@
 "use client";
+import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/product";
+import { toastSuccess } from "@/utils/toast";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,6 +11,7 @@ interface Props {
   isOtherProducts?: boolean;
 }
 export function ProductCard({ product, isOtherProducts=false }: Props) {
+  const addToCart=useCartStore.getState().addToCart
   const router = useRouter();
   const variant = product.variants[0];
 
@@ -27,7 +30,9 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
     console.log("shoeing details of product", name);
   };
   const handleAddToCart = (id: string) => {
-    console.log("added to cart", id);
+    const quantity=1
+    addToCart({product_id:id,quantity})
+    toastSuccess("Product added to Cart")
   };
 
   return (
