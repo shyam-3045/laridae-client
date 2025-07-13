@@ -3,9 +3,9 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <div className="relative z-40 w-full h-[92vh]">
+    <div className="relative z-40  h-[92vh]">
       <Image
-        src="/herosectio.webp"
+        src="/heroSection.png"
         alt="Hero"
         fill
         className="object-cover"

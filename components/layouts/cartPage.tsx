@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { Plus, Minus, X, ShoppingBag, CreditCard } from "lucide-react";
 import { Product } from "@/types/product";
 import { CartProps } from "@/types/common";
-import { ProductCard } from "../common/ProductCard";
 import Link from "next/link";
 
 type Props = {
   allProducts: Product[];
   cart: CartProps[];
   clearCart: () => void;
+  clearProduct:(id:string)=> void;
 };
-const CartPage = ({ allProducts, cart, clearCart }: Props) => {
+const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -57,7 +57,7 @@ const CartPage = ({ allProducts, cart, clearCart }: Props) => {
       products,
     };
   });
-  console.log(orginalCart);
+
 
   //console.log(orginalCart.map(item=>item.))
   const removeItem = (id: number) => {
@@ -166,12 +166,12 @@ const CartPage = ({ allProducts, cart, clearCart }: Props) => {
                               {/* <span className="font-bold text-lg">
                                 ${(item?.products?.variants[0]?.discountedPrice * item.quantity)}
                               </span> */}
-                              {/* <button
-                                onClick={() => removeItem(item.id)}
+                              <button
+                                onClick={() => clearProduct(item?.product_id)}
                                 className="text-red-600 hover:text-red-700 p-1"
                               >
                                 <X className="w-5 h-5" />
-                              </button> */}
+                              </button>
                             </div>
                           </div>
                         </div>

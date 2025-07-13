@@ -7,7 +7,7 @@ type CartStore = {
   cart: CartProps[];
   addToCart: (item: CartProps) => void;
   clearCart: () => void;
-  clearProduct:(id:string)=>void
+  clearProduct:(id:string)=>CartProps[]
 };
 
 export const useCartStore = create<CartStore>()(
@@ -33,9 +33,11 @@ export const useCartStore = create<CartStore>()(
       },
 
       clearCart: () => set({ cart: [] }),
-      clearProduct:(id)=> {
+      clearProduct:(id:string)=> {
         const filteredCart=get().cart.filter(item=> item.product_id.toString() !== id.toString())
         set({cart:filteredCart}) 
+        return filteredCart
+        
       }
     }),
     {

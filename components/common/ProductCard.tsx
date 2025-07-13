@@ -27,7 +27,7 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
   };
   const handlePageChange = (name: string, id: string) => {
     router.push(`/product/${name}?id=${id}`);
-    console.log("shoeing details of product", name);
+    
   };
   const handleAddToCart = (id: string) => {
     const quantity=1

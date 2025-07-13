@@ -7,6 +7,8 @@ import {
 import { Product } from "@/types/product";
 import Image from "next/image";
 import { ProductCard } from "../common/ProductCard";
+import { useCartStore } from "@/store/cartStore";
+import { toastSuccess } from "@/utils/toast";
 
 interface Params {
   products: Product;
@@ -15,6 +17,7 @@ interface Params {
   allProducts:Product[];
 }
 const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
+  const addTocart=useCartStore.getState().addToCart
   const [quantity, setQuantity] = useState(1);
   const [isZooming, setIsZooming] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
@@ -75,6 +78,14 @@ const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
   const handleMouseLeave = () => {
     setIsZooming(false);
   };
+  const handleAddTOCart=(id:string)=>
+  {
+    
+    let product_id=id
+    addTocart({product_id,quantity})
+    toastSuccess("Item Added To Cart")
+    
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -199,7 +210,7 @@ const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
                     ))}
                   </select>
 
-                  <button className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-2 rounded text-sm font-medium transition-colors">
+                  <button onClick={()=>handleAddTOCart(products._id)} className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-2 rounded text-sm font-medium transition-colors">
                     ADD TO CART
                   </button>
                 </div>
