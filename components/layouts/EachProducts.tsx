@@ -8,7 +8,7 @@ import { Product } from "@/types/product";
 import Image from "next/image";
 import { ProductCard } from "../common/ProductCard";
 import { useCartStore } from "@/store/cartStore";
-import { toastSuccess } from "@/utils/toast";
+import { toastFailure, toastSuccess } from "@/utils/toast";
 
 interface Params {
   products: Product;
@@ -82,8 +82,15 @@ const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
   {
     
     let product_id=id
-    addTocart({product_id,quantity})
-    toastSuccess("Item Added To Cart")
+    const Flag=addTocart({product_id,quantity})
+    if(Flag)
+    {
+      toastSuccess("Item Added To Cart")
+    }
+    else{
+      toastFailure("Not allowed")
+    }
+    
     
   }
 
@@ -203,7 +210,7 @@ const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                     className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   >
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(3)].map((_, i) => (
                       <option key={i} value={i + 1}>
                         {i + 1}
                       </option>

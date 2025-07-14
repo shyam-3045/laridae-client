@@ -1,7 +1,7 @@
 "use client";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/product";
-import { toastSuccess } from "@/utils/toast";
+import { toastFailure, toastSuccess } from "@/utils/toast";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -31,8 +31,15 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
   };
   const handleAddToCart = (id: string) => {
     const quantity=1
-    addToCart({product_id:id,quantity})
-    toastSuccess("Product added to Cart")
+    const flag=addToCart({product_id:id,quantity})
+    if(flag)
+    {
+      toastSuccess("Product added to Cart")
+    }
+    else{
+      toastFailure("Not allowed")
+    }
+    
   };
 
   return (

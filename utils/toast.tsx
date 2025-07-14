@@ -17,7 +17,7 @@ transition: Bounce,
 export function toastFailure(msg:string)
 {
     toast.error(msg, {
-position: "top-left",
+position: "top-center",
 autoClose: 3500,
 hideProgressBar: false,
 closeOnClick: false,

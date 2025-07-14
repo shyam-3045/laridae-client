@@ -13,6 +13,7 @@ export interface Product {
   reviews: Review[];
   variants: Variant[];
   images: Image[];
+  shopFlag:number
 }
 export interface Review {
   _id: string;
