@@ -23,7 +23,7 @@ const Shop = async () => {
   return (
     
     <HydrationBoundary state={dehydrateState}>
-      <ShopPage shopFlag={1} />
+      <ShopPage shopFlag={shopFlag} />
     </HydrationBoundary>
     
     

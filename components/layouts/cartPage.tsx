@@ -1,9 +1,11 @@
 
 import React, { useState } from "react";
-import { Plus, Minus, X, ShoppingBag, CreditCard } from "lucide-react";
+import { X, ShoppingBag, CreditCard } from "lucide-react";
+//import {Plus, Minus} from 'lucide-react'
 import { Product } from "@/types/product";
 import { CartProps } from "@/types/common";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   allProducts: Product[];
@@ -12,7 +14,7 @@ type Props = {
   clearProduct:(id:string)=> void;
 };
 const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
-  const [cartItems, setCartItems] = useState([
+  const [cartItems] = useState([
     {
       id: 1,
       name: "Wireless Headphones",
@@ -39,14 +41,14 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
     },
   ]);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity <= 0) return;
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+  // const updateQuantity = (id: number, newQuantity: number) => {
+  //   if (newQuantity <= 0) return;
+  //   setCartItems((items) =>
+  //     items.map((item) =>
+  //       item.id === id ? { ...item, quantity: newQuantity } : item
+  //     )
+  //   );
+  // };
 
   const orginalCart = cart.map((item) => {
     const products = allProducts.find(
@@ -59,10 +61,7 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   });
 
 
-  //console.log(orginalCart.map(item=>item.))
-  const removeItem = (id: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
+  
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -125,9 +124,11 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
                       className="border border-gray-200 rounded-lg p-4 bg-gray-50"
                     >
                       <div className="flex flex-col sm:flex-row gap-4">
-                        <img
-                          src={item?.products?.images[0].url}
-                          alt={item?.products?.name}
+                        <Image
+                          src={`${item?.products?.images[0].url}`}
+                          alt={`${item?.products?.name}`}
+                          width={100}
+                          height={100}
                           className="w-full sm:w-24 h-24 object-cover rounded-lg"
                         />
 
@@ -192,9 +193,12 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
                 <div className="space-y-4 mb-6">
                   {orginalCart.map((item) => (
                     <div key={item.product_id} className="flex gap-3">
-                      <img
-                        src={item.products?.images[0]?.url}
-                        alt={item?.products?.name}
+                      <Image
+                        src={`${item.products?.images[0]?.url}`}
+                        alt={`${item?.products?.name}`}
+                        width={100}
+                          height={100}
+                
                         className="w-12 h-12 object-cover rounded"
                       />
                       <div className="flex-1">

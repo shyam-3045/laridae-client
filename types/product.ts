@@ -39,3 +39,10 @@ export interface Image {
   url: string;
   _id: string;
 }
+
+
+export interface productCardProps {
+  product: Product;
+  isOtherProducts?: boolean;
+  shopFlag:number
+}

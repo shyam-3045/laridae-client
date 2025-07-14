@@ -14,7 +14,7 @@ export default function Cart() {
   const clearProduct=useCartStore.getState().clearProduct
   useEffect(()=>
   {
-      let res = useCartStore.getState().cart;
+      const  res = useCartStore.getState().cart;
       setCart(res)
   },[cart])
   

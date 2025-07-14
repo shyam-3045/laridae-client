@@ -81,7 +81,7 @@ const SingleProducts = ({ products, isLoading,allProducts }: Params) => {
   const handleAddTOCart=(id:string)=>
   {
     
-    let product_id=id
+    const product_id=id
     const Flag=addTocart({product_id,quantity})
     if(Flag)
     {
