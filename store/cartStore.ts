@@ -24,12 +24,10 @@ export const useCartStore = create<CartStore>()(
         );
 
         let updatedCart = [...currentCart];
-        if(index !== -1 && updatedCart[index].quantity >= 3)
+        if(index !== -1 && updatedCart[index].quantity >= 3 || index !== -1 && updatedCart[index].quantity + quantity >=3 )
         {
           return false
         }
-        
-        
 
         if (index !== -1) {
           updatedCart[index].quantity += quantity;
