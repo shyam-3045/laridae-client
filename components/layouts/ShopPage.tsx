@@ -4,14 +4,50 @@ import { useAllProducts } from "@/hooks/CustomHooks/useAllProducts";
 import { ProductCard } from "../common/ProductCard";
 import { Product } from "@/types/product";
 import AnnouncementBar from "../common/AnnouncementBar";
+import { useEffect, useState } from "react";
 
-type Props={
-    shopFlag:number
-}
-const ShopPage = ({ shopFlag }:Props) => {
+type Props = {
+  shopFlag: number;
+};
+const ShopPage = ({ shopFlag }: Props) => {
   const { data: products, isLoading } = useAllProducts();
-  const product= shopFlag === 1? products?.data.filter((item:Product)=>item.shopFlag === 1 || item.shopFlag === 3):products?.data.filter((item:Product)=>item.shopFlag ===2 || item.shopFlag === 3)
- 
+  const [product,setProduct]=useState<Product[]>()
+  useEffect(() => {
+  if (!products?.data) return;
+
+  const res =
+    shopFlag === 1
+      ? products.data.filter(
+          (item: Product) => item.shopFlag === 1 || item.shopFlag === 3
+        )
+      : products.data.filter(
+          (item: Product) => item.shopFlag === 2 || item.shopFlag === 3
+        );
+
+  setProduct(res);
+}, [products, shopFlag]);
+  const filterOptions = [
+    {
+      name: "Asafoetida",
+      id: 1,
+    },
+
+    {
+      name: "Laridae",
+      id: 2,
+    },
+    {
+      name: "Gram Flour",
+      id: 3,
+    },
+  ];
+  const handleFilter = (name: string) => {
+    const filteredProducts = product?.filter((item: Product) =>
+      item.name.toLowerCase().includes(name.toLowerCase())
+    );
+    setProduct(filteredProducts)
+    
+  };
 
   if (isLoading) {
     return (
@@ -51,13 +87,13 @@ const ShopPage = ({ shopFlag }:Props) => {
                   Filters
                 </h2>
 
-                {/* Product Type */}
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base font-medium text-gray-900">
-                      Product Type
-                    </h3>
-                    <svg
+                {filterOptions?.map((item: { name: string; id: number }) => (
+                  <div key={item.id} className="mb-8">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-base font-medium text-gray-900">
+                        {item.name}
+                      </h3>
+                      {/* <svg
                       className="w-4 h-4 text-gray-400"
                       fill="none"
                       stroke="currentColor"
@@ -69,75 +105,14 @@ const ShopPage = ({ shopFlag }:Props) => {
                         strokeWidth={2}
                         d="M19 9l-7 7-7-7"
                       />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Form */}
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base font-medium text-gray-900">
-                      Form
-                    </h3>
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
+                    </svg> */}
+                      <input
+                        type="checkbox"
+                        onChange={() => handleFilter(item.name)}
                       />
-                    </svg>
+                    </div>
                   </div>
-                </div>
-
-                {/* Caffeine */}
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base font-medium text-gray-900">
-                      Caffeine
-                    </h3>
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Collection */}
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base font-medium text-gray-900">
-                      Collection
-                    </h3>
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
