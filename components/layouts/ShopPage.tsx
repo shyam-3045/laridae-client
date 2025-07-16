@@ -9,29 +9,66 @@ import { useEffect, useState } from "react";
 type Props = {
   shopFlag: number;
 };
+
+type FilterState = {
+  Asafoetida: boolean;
+  Laridae: boolean;
+  GramFlour: boolean;
+  [key: string]: boolean;
+};
+
 const ShopPage = ({ shopFlag }: Props) => {
   const { data: products, isLoading } = useAllProducts();
-  const [product,setProduct]=useState<Product[]>()
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [originalProducts, setOriginalProducts] = useState<Product[]>([]);
+  const [filter, setFilter] = useState<FilterState>({
+    Asafoetida: false,
+    Laridae: false,
+    GramFlour: false,
+  });
+
   useEffect(() => {
-  if (!products?.data) return;
+    if (!products?.data) return;
 
-  const res =
-    shopFlag === 1
-      ? products.data.filter(
-          (item: Product) => item.shopFlag === 1 || item.shopFlag === 3
-        )
-      : products.data.filter(
-          (item: Product) => item.shopFlag === 2 || item.shopFlag === 3
-        );
+    const initialProducts =
+      shopFlag === 1
+        ? products.data.filter(
+            (item: Product) => item.shopFlag === 1 || item.shopFlag === 3
+          )
+        : products.data.filter(
+            (item: Product) => item.shopFlag === 2 || item.shopFlag === 3
+          );
 
-  setProduct(res);
-}, [products, shopFlag]);
+    setOriginalProducts(initialProducts);
+    setFilteredProducts(initialProducts);
+  }, [products, shopFlag]);
+
+  useEffect(() => {
+    if (originalProducts.length === 0) return;
+
+    const activeFilters = Object.entries(filter)
+      .filter(([_, value]) => value)
+      .map(([key]) => key.toLowerCase());
+
+    if (activeFilters.length === 0) {
+      setFilteredProducts(originalProducts);
+      return;
+    }
+
+    const newFilteredProducts = originalProducts.filter((product) =>
+      activeFilters.some((filter) =>
+        product.name.toLowerCase().includes(filter)
+      )
+    );
+
+    setFilteredProducts(newFilteredProducts);
+  }, [filter, originalProducts]);
+
   const filterOptions = [
     {
       name: "Asafoetida",
       id: 1,
     },
-
     {
       name: "Laridae",
       id: 2,
@@ -41,12 +78,12 @@ const ShopPage = ({ shopFlag }: Props) => {
       id: 3,
     },
   ];
-  const handleFilter = (name: string) => {
-    const filteredProducts = product?.filter((item: Product) =>
-      item.name.toLowerCase().includes(name.toLowerCase())
-    );
-    setProduct(filteredProducts)
-    
+
+  const handleFilterChange = (name: keyof FilterState) => {
+    setFilter((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
   };
 
   if (isLoading) {
@@ -63,7 +100,6 @@ const ShopPage = ({ shopFlag }: Props) => {
   return (
     <>
       <div className="min-h-screen bg-white">
-        {/* Header Section */}
         <div className="bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center">
@@ -80,35 +116,24 @@ const ShopPage = ({ shopFlag }: Props) => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Left Sidebar - Categories */}
             <div className="w-full lg:w-80 lg:flex-shrink-0">
               <div className="bg-white lg:sticky lg:top-8">
                 <h2 className="text-lg font-medium text-[#C5A572] mb-6">
                   Filters
                 </h2>
 
-                {filterOptions?.map((item: { name: string; id: number }) => (
+                {filterOptions?.map((item) => (
                   <div key={item.id} className="mb-8">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-base font-medium text-gray-900">
-                        {item.name}
+                        {item .name === 'Laridae' ?<p>{item.name} Tea</p>:<p>{item.name}</p>}
+                        
                       </h3>
-                      {/* <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg> */}
                       <input
                         type="checkbox"
-                        onChange={() => handleFilter(item.name)}
+                        checked={filter[item.name] || false}
+                        onChange={() => handleFilterChange(item.name as keyof FilterState)}
+                        className="h-4 w-4 text-[#C5A572] focus:ring-[#C5A572] border-gray-300 rounded"
                       />
                     </div>
                   </div>
@@ -116,30 +141,16 @@ const ShopPage = ({ shopFlag }: Props) => {
               </div>
             </div>
 
-            {/* Right Content - Products */}
             <div className="flex-1">
-              <div className="flex justify-between items-center mb-8">
-                <div></div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-[#C5A572] font-medium">
-                    Sort By:
-                  </span>
-                  <select className="text-sm text-gray-900 bg-transparent border-none focus:outline-none cursor-pointer">
-                    <option>Featured</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Rating</option>
-                  </select>
-                </div>
-              </div>
+              
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {product?.map((product: Product) => (
+                {filteredProducts?.map((product: Product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
 
-              {(!product || product?.length === 0) && (
+              {(!filteredProducts || filteredProducts?.length === 0) && (
                 <div className="text-center py-12">
                   <div className="text-gray-400 text-6xl mb-4">🍃</div>
                   <p className="text-gray-500 text-lg">No products found</p>
