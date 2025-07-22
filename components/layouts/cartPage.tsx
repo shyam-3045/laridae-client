@@ -1,4 +1,4 @@
-
+'use client'
 import React, { useState } from "react";
 import { X, ShoppingBag, CreditCard } from "lucide-react";
 //import {Plus, Minus} from 'lucide-react'
@@ -6,6 +6,9 @@ import { Product } from "@/types/product";
 import { CartProps } from "@/types/common";
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@/store/userStore";
+import LoginModal from "./loginModal";
+import { useRouter } from "next/navigation";
 
 type Props = {
   allProducts: Product[];
@@ -14,11 +17,13 @@ type Props = {
   clearProduct:(id:string)=> void;
 };
 const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
+  const router=useRouter()
+  const [openModal,setOpenModal]=useState<boolean>(false)
   const [cartItems] = useState([
     {
       id: 1,
       name: "Wireless Headphones",
-      price: 99.99,
+      price: 99.99, 
       quantity: 2,
       image:
         "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop&crop=center",
@@ -40,7 +45,7 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
         "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=300&fit=crop&crop=center",
     },
   ]);
-
+  const {login,checkAuth,isLogged}=useUser()
   // const updateQuantity = (id: number, newQuantity: number) => {
   //   if (newQuantity <= 0) return;
   //   setCartItems((items) =>
@@ -49,7 +54,6 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   //     )
   //   );
   // };
-
   const orginalCart = cart.map((item) => {
     const products = allProducts.find(
       (prod) => item.product_id.toString() === prod._id.toString()
@@ -61,6 +65,7 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   });
 
 
+
   
 
   const subtotal = cartItems.reduce(
@@ -69,7 +74,21 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   );
   const tax = subtotal * 0.08;
   const total = subtotal + tax;
+  const handleProceed=()=>
+  {
+    if(!isLogged)
+    {
+      setOpenModal(prev => !prev)
+    }
+    else{
+      router.push("/payment")
 
+    }
+  }
+  const onClose=()=>
+  {
+    setOpenModal(false)
+  }
   if (orginalCart.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
@@ -96,7 +115,8 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
 
   return (
     
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div>
+        <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
@@ -231,15 +251,23 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
                   </div>
                 </div>
 
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold mt-6 flex items-center justify-center gap-2 transition-colors">
+                <button onClick={()=>handleProceed()}  className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold mt-6 flex items-center justify-center gap-2 transition-colors">
                   <CreditCard className="w-5 h-5" />
                   Proceed to Payment
                 </button>
+                
               </div>
             </div>
           </div>
         </div>
+        
       </div>
+      <div>
+     
+      </div>
+      {openModal && <LoginModal isOpen={openModal} onClose={onClose} isLogged={isLogged} />}
+      </div>
+      
       
     
   );

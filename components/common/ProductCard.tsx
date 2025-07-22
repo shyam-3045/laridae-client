@@ -29,8 +29,9 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
     router.push(`/product/${name}?id=${id}`);
     
   };
-  const handleAddToCart = (id: string) => {
+  const handleAddToCart = (id: string,shopFlag:number) => {
     const quantity=1
+    console.log(shopFlag)
     const flag=addToCart({product_id:id,quantity})
     if(flag)
     {
@@ -84,7 +85,7 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
       </div>
       {isOtherProducts ? null : (
         <button
-          onClick={() => handleAddToCart(product._id)}
+          onClick={() => handleAddToCart(product._id,product.shopFlag)}
           className="w-full bg-green-700 hover:bg-[#E40000] text-white font-semibold py-3 px-6 rounded-2xl transition-colors duration-300 transform hover:scale-105"
         >
           ADD TO CART
