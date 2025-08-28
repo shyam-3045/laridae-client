@@ -13,7 +13,10 @@ export interface Product {
   reviews: Review[];
   variants: Variant[];
   images: Image[];
-  shopFlag:number
+  shopFlag:number,
+  MAX:number,
+  MOQ:number
+
 }
 export interface Review {
   _id: string;

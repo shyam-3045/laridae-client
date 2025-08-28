@@ -1,10 +1,17 @@
 "use client";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 import React, { useState, useEffect, useRef, Ref } from "react";
 import { X, Shield, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { sendOtpReq, useVerifyOtpReq } from "@/hooks/CustomHooks/otp";
 import { ifError } from "assert";
-import { error } from "console";
+import api from "@/lib/config/axios";
 
 interface OTPModalProps {
   isOpen: boolean;
@@ -28,7 +35,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
     if(isError)
     {
         const msg=verificationError
-        setErr(msg?.response ?.data?.message )
+        setErr(msg?.message)
     }
     setTimeout(()=>
     {
@@ -67,7 +74,6 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto focus next input
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -101,11 +107,12 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
       const user = JSON.parse(localStorage.getItem("user-storage") as string);
       const email = user.state.data.user;
       verifyOtp({ email, otp: otpString });
-        console.log(isError)
+      console.log(isError)
 
       if (isSuccess) {
         console.log(verificationData);
-        router.push("/");
+        startPayment()
+        router.push("/orders");
         onClose();
       }
       // login({ user: email || phoneNumber });
@@ -115,6 +122,47 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const startPayment=async()=>
+  {
+  
+    const order= await api.post("create-order",{
+      amount:500
+    })
+    console.log(order)
+    // 2. Open Razorpay Checkout
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // public key
+      amount: order?.data?.data?.amount,
+      currency: order?.data?.data?.currency,
+      name: "Laridae",
+      description: "Tea order",
+      order_id: order?.data?.data?.id,
+      handler: async function (response: any,order_id:string) {
+        // 3. Verify payment on backend
+        
+        const verify= await api.post("/verify-payment",{
+          razorpay_order_id : order_id
+        })
+        console.log(verify)
+        if (verify?.data?.success) {
+          alert("✅ Payment successful!");
+        } else {
+          alert("❌ Payment verification failed");
+        }
+      },
+      prefill: {
+        name: "Shyam",
+        email: "shyam@example.com",
+        contact: "9876543210",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  }
   const handleResend = async () => {
     if (!canResend) return;
 
@@ -198,6 +246,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
                 ))}
               </div>
             </div>
+            <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
 
             <button
               type="button"
