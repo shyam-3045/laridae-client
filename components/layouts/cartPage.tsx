@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X, ShoppingBag, CreditCard } from "lucide-react";
 //import {Plus, Minus} from 'lucide-react'
 import { Product } from "@/types/product";
@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useUser } from "@/store/userStore";
 import LoginModal from "./loginModal";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/store/cartStore";
+
 
 type Props = {
   allProducts: Product[];
@@ -18,33 +20,10 @@ type Props = {
 };
 const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   const router=useRouter()
+  const {setCartTotal}=useCartStore()
   const [openModal,setOpenModal]=useState<boolean>(false)
-  const [cartItems] = useState([
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      price: 99.99, 
-      quantity: 2,
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop&crop=center",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      price: 299.99,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop&crop=center",
-    },
-    {
-      id: 3,
-      name: "Bluetooth Speaker",
-      price: 79.99,
-      quantity: 3,
-      image:
-        "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=300&fit=crop&crop=center",
-    },
-  ]);
+  
+  
   const {login,checkAuth,isLogged}=useUser()
   // const updateQuantity = (id: number, newQuantity: number) => {
   //   if (newQuantity <= 0) return;
@@ -54,6 +33,8 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   //     )
   //   );
   // };
+  
+  
   const orginalCart = cart.map((item) => {
     const products = allProducts.find(
       (prod) => item.product_id.toString() === prod._id.toString()
@@ -66,13 +47,19 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
 
 
 
-  
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const tax = subtotal * 0.08;
+
+const subtotal = orginalCart.reduce((acc, item) => {
+  const price = item?.products?.variants[0].discountedPrice as number;
+  return acc + price * item.quantity;
+}, 0);
+useEffect(()=>
+  {
+    setCartTotal(subtotal)
+  },[subtotal])
+
+  
+  const tax = subtotal  * 0.00000001;
   const total = subtotal + tax;
   const handleProceed=()=>
   {
@@ -265,7 +252,7 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
       <div>
      
       </div>
-      {openModal && <LoginModal isOpen={openModal} onClose={onClose} isLogged={isLogged} />}
+      {openModal && <LoginModal isOpen={openModal} onClose={onClose} isLogged={isLogged}  />}
       </div>
       
       

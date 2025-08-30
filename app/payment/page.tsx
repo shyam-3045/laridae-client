@@ -7,6 +7,7 @@ import { MapPin, Phone, Home, Navigation, ArrowLeft, Truck } from 'lucide-react'
 import { addUserDetails } from '@/hooks/CustomHooks/auth';
 import OtpModal from '@/components/layouts/otpModal';
 import { sendOtpReq } from '@/hooks/CustomHooks/otp';
+import { useCartStore } from '@/store/cartStore';
 
 
 
@@ -24,7 +25,7 @@ const deliverySchema = z.object({
   setAsDefault: z.boolean().default(false).optional()
 });
 
-type DeliveryFormData = z.infer<typeof deliverySchema>;
+export type DeliveryFormData = z.infer<typeof deliverySchema>;
 
 
 
@@ -47,13 +48,16 @@ const PaymentPage: React.FC = () => {
       setAsDefault: false
     }
   });
+  const [delivarydetails,setDelivaruDetails]=useState<DeliveryFormData>()
   const [otpModal,setOtpModal]=useState(false)
   const {data:userData,isPending,isError,error,mutate:addUser}=addUserDetails()
   const onSubmit = async (data: DeliveryFormData) => {
     try {
       const user=JSON.parse(localStorage.getItem('user-storage') as string)
       const email=user.state.data.user
+      setDelivaruDetails(data)
       addUser({data})
+      //
       reset();
       sendOtp({email})
       if (otpisError) console.log(otpError)
@@ -270,7 +274,7 @@ const PaymentPage: React.FC = () => {
       </div>
     </div>
     <div>
-      {otpModal && <OtpModal isOpen={otpModal} onClose={onClose} />}
+      {otpModal && <OtpModal isOpen={otpModal} onClose={onClose} delivarydetails={delivarydetails} totalAmount={useCartStore.getState().cartTotal} products={useCartStore.getState().cart}/>}
     </div>
     </div>
   );

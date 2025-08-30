@@ -4,15 +4,18 @@ import { CartProps } from "@/types/common";
 
 type CartStore = {
   cart: CartProps[];
+  cartTotal:number;
   addToCart: (item: CartProps) => boolean;
   clearCart: () => void;
-  clearProduct:(id:string)=>CartProps[]
+  clearProduct:(id:string)=>CartProps[];
+  setCartTotal:(total:number)=>void;
 };
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cart: [],
+      cartTotal:0,
 
       addToCart: ({ product_id, quantity }: CartProps) => {
         const currentCart = get().cart;
@@ -44,7 +47,9 @@ export const useCartStore = create<CartStore>()(
         set({cart:filteredCart}) 
         return filteredCart
         
-      }
+      },
+      setCartTotal :(total : number)=> set({cartTotal : total})
+
     }),
     {
       name: "USER_CART", 

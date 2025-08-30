@@ -12,15 +12,25 @@ import { useRouter } from "next/navigation";
 import { sendOtpReq, useVerifyOtpReq } from "@/hooks/CustomHooks/otp";
 import { ifError } from "assert";
 import api from "@/lib/config/axios";
+import { DeliveryFormData } from "@/app/payment/page";
+import { orginalCart } from "@/types/cart";
+import { toastFailure, toastSuccess } from "@/utils/toast";
+import { createOrd } from "@/hooks/CustomHooks/orders";
 
+
+type product=Pick<orginalCart , "product_id"|"quantity">
 interface OTPModalProps {
+  delivarydetails?:DeliveryFormData
   isOpen: boolean;
   onClose: () => void;
+  totalAmount:number;
+  products:product[];
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
+const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,totalAmount,products }) => {
   const { mutate: sendOtp } = sendOtpReq();
   const [err,setErr]=useState<string>()
+  console.log(products )
 
   const {
     mutate: verifyOtp,
@@ -29,6 +39,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
     isError,
     error:verificationError,
   } = useVerifyOtpReq();
+  const{mutate : creatOrder,data:orderData}=createOrd()
 
   useEffect(()=>
 {
@@ -43,6 +54,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
     },3000)
 
 },[verificationError,ifError])
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
@@ -55,7 +67,9 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
+      console.log("resend occur by timer !")
       return () => clearInterval(interval);
+      
     } else {
       setCanResend(true);
     }
@@ -112,7 +126,6 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
       if (isSuccess) {
         console.log(verificationData);
         startPayment()
-        router.push("/orders");
         onClose();
       }
       // login({ user: email || phoneNumber });
@@ -124,7 +137,8 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
 
   const startPayment=async()=>
   {
-  
+    const user = JSON.parse(localStorage.getItem("user-storage") as string);
+      const email = user.state.data.user;  
     const order= await api.post("create-order",{
       amount:500
     })
@@ -141,13 +155,29 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
         // 3. Verify payment on backend
         
         const verify= await api.post("/verify-payment",{
-          razorpay_order_id : order_id
+          razorpay_order_id: response.razorpay_order_id,
+                       razorpay_payment_id: response.razorpay_payment_id,
+                       razorpay_signature: response.razorpay_signature,
         })
         console.log(verify)
         if (verify?.data?.success) {
-          alert("✅ Payment successful!");
+          toastSuccess("Order Placed Successfullt")
+          creatOrder({
+            email:email,
+            products:products,
+            deliveryDetails:delivarydetails,
+            totalAmount:totalAmount,
+            paymentDetails:{
+                       razorpay_order_id: response.razorpay_order_id,
+                       razorpay_payment_id: response.razorpay_payment_id,
+                       razorpay_signature: response.razorpay_signature,
+            }
+
+          })
+          console.log(orderData)
+          router.push("/orders");
         } else {
-          alert("❌ Payment verification failed");
+          toastFailure("❌ Payment verification failed")
         }
       },
       prefill: {
