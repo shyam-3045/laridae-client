@@ -16,6 +16,7 @@ import { DeliveryFormData } from "@/app/payment/page";
 import { orginalCart } from "@/types/cart";
 import { toastFailure, toastSuccess } from "@/utils/toast";
 import { createOrd } from "@/hooks/CustomHooks/orders";
+import { useCartStore } from "@/store/cartStore"; 
 
 
 type product=Pick<orginalCart , "product_id"|"quantity">
@@ -30,6 +31,7 @@ interface OTPModalProps {
 const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,totalAmount,products }) => {
   const { mutate: sendOtp } = sendOtpReq();
   const [err,setErr]=useState<string>()
+  
   console.log(products )
 
   const {
@@ -162,6 +164,8 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
         console.log(verify)
         if (verify?.data?.success) {
           toastSuccess("Order Placed Successfullt")
+          useCartStore.getState().clearCart()
+
           creatOrder({
             email:email,
             products:products,
