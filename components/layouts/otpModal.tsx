@@ -6,6 +6,7 @@ declare global {
     Razorpay: any;
   }
 }
+
 import React, { useState, useEffect, useRef, Ref } from "react";
 import { X, Shield, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -40,7 +41,19 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
     isSuccess,
     isError,
     error:verificationError,
-  } = useVerifyOtpReq();
+  } = useVerifyOtpReq(
+    {
+      onSuccess: (data) => {
+      console.log("OTP verified:", data);
+      startPayment();
+      onClose();
+  },
+  onError: (error: any) => {
+    setErr(error?.message || "Invalid OTP");
+    setTimeout(() => setErr(""), 3000);
+  },
+    }
+  );
   const{mutate : creatOrder,data:orderData}=createOrd()
 
   useEffect(()=>
@@ -48,7 +61,7 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
     if(isError)
     {
         const msg=verificationError
-        setErr(msg?.message)
+        //setErr(msg?.message)
     }
     setTimeout(()=>
     {
@@ -111,31 +124,19 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
       inputRefs.current[5]?.focus();
     }
   };
+const handleVerify = () => {
+  const otpString = otp.join("");
 
-  const handleVerify = async () => {
-    const otpString = otp.join("");
+  if (otpString.length !== 6) return;
 
-    if (otpString.length !== 6) {
-      return;
-    }
-
-    try {
-      const user = JSON.parse(localStorage.getItem("user-storage") as string);
-      const email = user.state.data.user;
-      verifyOtp({ email, otp: otpString });
-      console.log(isError)
-
-      if (isSuccess) {
-        console.log(verificationData);
-        startPayment()
-        onClose();
-      }
-      // login({ user: email || phoneNumber });
-      
-    } catch (error) {
-      console.error("OTP verification failed:", error);
-    }
-  };
+  try {
+    const user = JSON.parse(localStorage.getItem("user-storage") as string);
+    const email = user.state.data.user;
+    verifyOtp({ email, otp: otpString }); // no need to check isSuccess here
+  } catch (error) {
+    console.error("OTP verification failed:", error);
+  }
+};
 
   const startPayment=async()=>
   {
@@ -288,7 +289,7 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
               disabled={otp.join("").length !== 6} // || isVerifying
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {/* {isVerifying ? "Verifying..." : "Verify OTP"} */}
+             
               Verify OTP
             </button>
           </div>

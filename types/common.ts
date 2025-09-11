@@ -6,7 +6,8 @@ export type children={
 
 export interface CartProps{
     product_id:string,
-    quantity:number
+    quantity:number,
+    
 }
 
 export type shopFlag={

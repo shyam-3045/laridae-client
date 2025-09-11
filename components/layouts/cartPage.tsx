@@ -10,6 +10,9 @@ import { useUser } from "@/store/userStore";
 import LoginModal from "./loginModal";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
+import { orginalCart } from "@/types/cart";
+import { Underdog } from "next/font/google";
+import { toastFailure } from "@/utils/toast";
 
 
 type Props = {
@@ -33,7 +36,6 @@ const CartPage = ({ allProducts, cart, clearCart,clearProduct }: Props) => {
   //     )
   //   );
   // };
-  
   
   const orginalCart = cart.map((item) => {
     const products = allProducts.find(
@@ -61,8 +63,22 @@ useEffect(()=>
   
   const tax = subtotal  * 0.00000001;
   const total = subtotal + tax;
-  const handleProceed=()=>
+  const handleProceed=(orginalCart : orginalCart[])=>
   {
+
+
+    for(const index in orginalCart)
+    {
+      if(orginalCart[index].products)
+      {
+        if(orginalCart[index].quantity < orginalCart[index]?.products?.MOQ)
+      {
+        toastFailure(`${orginalCart[index]?.products.name} must have atleast ${orginalCart[index]?.products.MOQ} Quantity`)
+        return 
+      }
+      }
+      console.log(orginalCart[index])
+    }
     if(!isLogged)
     {
       setOpenModal(prev => !prev)
@@ -238,7 +254,7 @@ useEffect(()=>
                   </div>
                 </div>
 
-                <button onClick={()=>handleProceed()}  className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold mt-6 flex items-center justify-center gap-2 transition-colors">
+                <button onClick={()=>handleProceed(orginalCart)}  className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold mt-6 flex items-center justify-center gap-2 transition-colors">
                   <CreditCard className="w-5 h-5" />
                   Proceed to Payment
                 </button>

@@ -1,11 +1,25 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CartProps } from "@/types/common";
+import { json } from "zod";
+import { error } from "console";
+import { Flag } from "lucide-react";
 
+
+interface addToCartPayload{
+        product_id:string,
+        quantity:number,
+        max:number,
+        min:number
+      }
+interface returnType{
+  res:string,
+  flag:boolean
+}
 type CartStore = {
   cart: CartProps[];
   cartTotal:number;
-  addToCart: (item: CartProps) => boolean;
+  addToCart: (item: addToCartPayload) =>returnType ;
   clearCart: () => void;
   clearProduct:(id:string)=>CartProps[];
   setCartTotal:(total:number)=>void;
@@ -17,7 +31,7 @@ export const useCartStore = create<CartStore>()(
       cart: [],
       cartTotal:0,
 
-      addToCart: ({ product_id, quantity }: CartProps) => {
+      addToCart: ({ product_id ,quantity,max,min }:addToCartPayload) => {
         const currentCart = get().cart;
         
         const index = currentCart.findIndex(
@@ -25,20 +39,28 @@ export const useCartStore = create<CartStore>()(
         );
 
         let updatedCart = [...currentCart];
-
-        if(index !== -1 && updatedCart[index].quantity > 3 || index !== -1 && updatedCart[index].quantity + quantity >3 )
+        
+        if(index !== -1 && updatedCart[index].quantity > max || index !== -1 && updatedCart[index].quantity + quantity >max )
         {
-          return false
+          return ({
+            res:"No product Found",
+            flag:false
+          })
         }
+        console.log(min)
 
         if (index !== -1) {
+          
           updatedCart[index].quantity += quantity;
         } else {  
           updatedCart.push({ product_id, quantity });
         }
         
         set({ cart: updatedCart });
-        return true
+        return ({
+            res:"Item Added To Cart",
+            flag:true
+          })
       },
 
       clearCart: () => set({ cart: [] }),

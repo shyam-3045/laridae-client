@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { sendOtp, verifyOtp } from "../services/otp";
 
 export const sendOtpReq=()=>
@@ -9,10 +9,11 @@ export const sendOtpReq=()=>
     })
 }
 
-export const useVerifyOtpReq=()=>
+export const useVerifyOtpReq=( options? : UseMutationOptions<any,unknown,{email:string,otp:string}>)=>
 {
     return useMutation({
         mutationFn:(payload:{email:string,otp:string})=>
-            verifyOtp(payload.email,payload.otp)
+            verifyOtp(payload.email,payload.otp),
+        ...options
     })
 }

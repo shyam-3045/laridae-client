@@ -2,7 +2,7 @@
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/product";
 import { toastFailure, toastSuccess } from "@/utils/toast";
-import { Star } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -10,8 +10,9 @@ interface Props {
   product: Product;
   isOtherProducts?: boolean;
 }
-export function ProductCard({ product, isOtherProducts=false }: Props) {
-  const addToCart=useCartStore.getState().addToCart
+
+export function ProductCard({ product, isOtherProducts = false }: Props) {
+  const addToCart = useCartStore.getState().addToCart;
   const router = useRouter();
   const variant = product.variants[0];
 
@@ -20,76 +21,119 @@ export function ProductCard({ product, isOtherProducts=false }: Props) {
       <Star
         key={i}
         className={`w-4 h-4 ${
-          i < rating ? "text-[#eac90b] fill-current" : "text-gray-300"
+          i < rating ? "text-amber-400 fill-current" : "text-gray-300"
         }`}
       />
     ));
   };
+
   const handlePageChange = (name: string, id: string) => {
     router.push(`/product/${name}?id=${id}`);
-    
-  };
-  const handleAddToCart = (id: string,shopFlag:number) => {
-    const quantity=1
-    console.log(shopFlag)
-    const flag=addToCart({product_id:id,quantity})
-    if(flag)
-    {
-      toastSuccess("Product added to Cart")
-    }
-    else{
-      toastFailure("Not allowed")
-    }
-    
   };
 
+  const handleAddToCart = (id: string, shopFlag: number) => {
+    const quantity = 1;
+    const { res, flag } = addToCart({
+      product_id: id,
+      quantity,
+      max: product.MAX,
+      min: product.MOQ,
+    });
+    if (flag) {
+      toastSuccess(res);
+    } else {
+      toastFailure(res);
+    }
+  };
+
+  // Calculate discount percentage
+  const discountPercentage = variant.price
+    ? Math.round(((variant.price - variant.discountedPrice) / variant.price) * 100)
+    : 0;
+
   return (
-    <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
-      <div onClick={() => handlePageChange(product.name, product._id)}>
-        <div className="relative p-6 bg-gray-50 rounded-t-3xl">
-          <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100 h-full flex flex-col">
+      {/* Clickable content area */}
+      <div 
+        onClick={() => handlePageChange(product.name, product._id)}
+        className="cursor-pointer flex-1 flex flex-col"
+      >
+        {/* Image Section */}
+        <div className="relative p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+          {/* Discount Badge */}
+          {discountPercentage > 0 && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+              -{discountPercentage}%
+            </div>
+          )}
+          
+          <div className="aspect-square bg-white rounded-xl overflow-hidden shadow-sm">
             <Image
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
           </div>
         </div>
 
-        <div className="p-6">
+        {/* Content Section - This will grow to fill available space */}
+        <div className="p-4 flex-1 flex flex-col">
+          {/* Rating Section */}
           <div className="flex items-center gap-1 mb-3">
-            {renderStars(product.ratings)}
-            <span className="ml-2 text-sm text-gray-600">
+            <div className="flex items-center">
+              {renderStars(product.ratings)}
+            </div>
+            <span className="ml-2 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
               {product.numOfReviews} reviews
             </span>
           </div>
 
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#E40000] transition-colors">
+          {/* Product Name */}
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5 group-hover:text-blue-600 transition-colors min-h-[2.5rem]">
             {product.name}
           </h3>
 
-          <p className="text-sm text-gray-600 mb-4">{product.category}</p>
-
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-xl font-bold text-gray-900">
-              ₹ {variant.discountedPrice}
+          {/* Category */}
+          <div className="mb-3">
+            <span className="inline-block bg-blue-50 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
+              {product.category}
             </span>
-            {variant.price && (
-              <span className="text-sm text-gray-500 line-through">
-                ₹ {variant.price}
+          </div>
+
+          {/* Price Section - This will be pushed to bottom by flex-1 above */}
+          <div className="mt-auto">
+            <div className="flex items-baseline gap-2 mb-3">
+              <span className="text-lg font-bold text-gray-900">
+                ₹{variant.discountedPrice.toLocaleString()}
               </span>
-            )}
+              {variant.price && variant.price !== variant.discountedPrice && (
+                <span className="text-sm text-gray-500 line-through">
+                  ₹{variant.price.toLocaleString()}
+                </span>
+              )}
+            </div>
+            
+            {/* MOQ and MAX info */}
+            <div className="flex justify-between text-xs text-gray-500 mb-2">
+              <span>MIN: {product.MOQ}</span>
+              <span>Max: {product.MAX}</span>
+            </div>
           </div>
         </div>
       </div>
-      {isOtherProducts ? null : (
-        <button
-          onClick={() => handleAddToCart(product._id,product.shopFlag)}
-          className="w-full bg-green-700 hover:bg-[#E40000] text-white font-semibold py-3 px-6 rounded-2xl transition-colors duration-300 transform hover:scale-105"
-        >
-          ADD TO CART
-        </button>
+
+      {/* Button Section - Always at bottom */}
+      {!isOtherProducts && (
+        <div className="p-4 pt-0">
+          <button
+            onClick={() => handleAddToCart(product._id, product.shopFlag)}
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            ADD TO CART
+          </button>
+        </div>
       )}
     </div>
   );

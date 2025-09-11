@@ -16,7 +16,7 @@ interface Order {
     image: string;
     quantity: number;
     price: number;
-  }>;
+  }>; 
   trackingNumber?: string;
   estimatedDelivery?: string;
   shippingAddress: string;
