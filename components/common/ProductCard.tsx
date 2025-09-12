@@ -114,11 +114,7 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
               )}
             </div>
             
-            {/* MOQ and MAX info */}
-            <div className="flex justify-between text-xs text-gray-500 mb-2">
-              <span>MIN: {product.MOQ}</span>
-              <span>Max: {product.MAX}</span>
-            </div>
+           
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Package, Truck, CheckCircle, Clock, Search, Filter, Eye, Download } from "lucide-react";
+import { Package, Truck, CheckCircle, Clock, Search, Filter, Eye } from "lucide-react";
 import { getMyOrders } from "@/hooks/CustomHooks/orders";
 
 interface Order {

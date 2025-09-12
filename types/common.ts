@@ -21,3 +21,6 @@ export interface loginFormData {
   confirmPassword?: string;
   name?: string;
 }
+
+
+

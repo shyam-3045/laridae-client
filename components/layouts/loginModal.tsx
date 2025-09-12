@@ -10,9 +10,9 @@ import {
   signUpSchema,
 } from "@/types/authSchema";
 import { useUser } from "@/store/userStore";
-import { loginFormData } from "@/types/common";
 import { useRouter } from "next/navigation";
 import { loginOrSignUp } from "@/hooks/CustomHooks/auth";
+import {  loginFormData } from "@/types/common";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -26,32 +26,34 @@ const LoginModal: React.FC<LoginModalProps> = ({
   
 }) => {
   const { mutateAsync, isPending, isError, error, data:loginData } = loginOrSignUp();
+  
   const [serverError,setServerError]=useState<string>('')
   const [isLogin, setIsLogin] = useState(true);
   const {login}=useUser()
   const router = useRouter();
-  const {
-    register,
-    handleSubmit: onHandleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm<LoginFormType | signUpFormType>({
-    resolver: zodResolver(isLogin ? loginSchema : signUpSchema),
-  });
+  
+  const { register, handleSubmit: onHandleSubmit, formState: { isSubmitting, errors }, } = useForm<loginFormData>({ resolver: zodResolver(isLogin ? loginSchema : signUpSchema), });
+
 
   useEffect(()=>
   {
-    const msg=error?.response?.data?.message
+    if(isError)
+    {
+     const msg = (error as any)?.response?.data?.message || "Something went wrong";
     setServerError(msg)
     setTimeout(()=>
     {
       setServerError("")
     },3000)
 
+    }
+   
+
   },[isError,error])
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = async (data: loginFormData) => {
+  const handleSubmit = async (data : loginFormData  ) => {
     const type = isLogin ? "Login" : "signup";
     await mutateAsync({ data, typeOfAuth: type });
     if (isError) {
@@ -124,14 +126,14 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     type="text"
                     name="name"
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                      errors.name ? "border-red-500" : "border-gray-300"
+                      errors?.name ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter your full name"
                   />
                 </div>
-                {errors.name && (
+                {errors?.name && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.name.message}
+                    {errors.name?.message}
                   </p>
                 )}
               </div>
