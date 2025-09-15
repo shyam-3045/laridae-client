@@ -90,13 +90,13 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
           </div>
 
           {/* Product Name */}
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5 group-hover:text-blue-600 transition-colors min-h-[2.5rem]">
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5 group-hover:text-red-600 transition-colors min-h-[2.5rem]">
             {product.name}
           </h3>
 
           {/* Category */}
           <div className="mb-3">
-            <span className="inline-block bg-blue-50 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
+            <span className="inline-block bg-red-50 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
               {product.category}
             </span>
           </div>
@@ -124,7 +124,7 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
         <div className="p-4 pt-0">
           <button
             onClick={() => handleAddToCart(product._id, product.shopFlag)}
-            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm"
+            className="w-full bg-gradient-to-r from-[#E40000] to-[#E40000] hover:from-[#eac90b] hover:to-[#eac90b] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm"
           >
             <ShoppingCart className="w-4 h-4" />
             ADD TO CART

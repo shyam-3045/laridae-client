@@ -81,11 +81,11 @@ const PaymentPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[calc(100vh-200px)]">
       
-          <div className="flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8">
+          <div className="flex items-center justify-center bg-gradient-to-br from-red-50 to-indigo-100 rounded-2xl p-8">
             <div className="text-center">
               <div className="w-64 h-64 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-lg">
                 <div className="relative">
-                  <Truck size={80} className="text-blue-600" />
+                  <Truck size={80} className="text-red-600" />
                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
@@ -98,15 +98,17 @@ const PaymentPage: React.FC = () => {
                 We deliver to your doorstep with care and precision. Add your delivery address to get started with seamless shopping experience.
               </p>
               <div className="mt-8 grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="font-semibold text-gray-900">Free Delivery</div>
-                  <div className="text-gray-600">On orders above ₹500</div>
-                </div>
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="font-semibold text-gray-900">Same Day</div>
-                  <div className="text-gray-600">Within city limits</div>
-                </div>
-              </div>
+  <div className="bg-white rounded-lg p-4 shadow-sm">
+    <div className="font-semibold text-gray-900">Fast & Reliable</div>
+    <div className="text-gray-600">Quick delivery for all your orders</div>
+  </div>
+  <div className="bg-white rounded-lg p-4 shadow-sm">
+    <div className="font-semibold text-gray-900">Hassle-Free Service</div>
+    <div className="text-gray-600">Smooth process from checkout to doorstep</div>
+  </div>
+</div>
+
+              
             </div>
           </div>
 
@@ -132,7 +134,7 @@ const PaymentPage: React.FC = () => {
                   id="address"
                   {...register('address')}
                   rows={3}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                     errors.address ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="House/Flat No, Street, Area, Locality"
@@ -153,7 +155,7 @@ const PaymentPage: React.FC = () => {
                     type="text"
                     id="pincode"
                     {...register('pincode')}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                       errors.pincode ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="123456"
@@ -173,7 +175,7 @@ const PaymentPage: React.FC = () => {
                     type="tel"
                     id="mobile"
                     {...register('mobile')}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                       errors.mobile ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="9876543210"
@@ -194,7 +196,7 @@ const PaymentPage: React.FC = () => {
                     type="text"
                     id="city"
                     {...register('city')}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                       errors.city ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your city"
@@ -212,7 +214,7 @@ const PaymentPage: React.FC = () => {
                     type="text"
                     id="state"
                     {...register('state')}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                       errors.state ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Enter your state"
@@ -233,7 +235,7 @@ const PaymentPage: React.FC = () => {
                   type="text"
                   id="landmark"
                   {...register('landmark')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors"
                   placeholder="Near famous place, building, etc."
                 />
               </div>
@@ -244,7 +246,7 @@ const PaymentPage: React.FC = () => {
                   type="checkbox"
                   id="setAsDefault"
                   {...register('setAsDefault')}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
                 />
                 <label htmlFor="setAsDefault" className="text-sm font-medium text-gray-700">
                   Set as default delivery address
@@ -256,7 +258,7 @@ const PaymentPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || isPending}
-                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 flex items-center justify-center"
+                  className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 flex items-center justify-center"
                 >
                   {isSubmitting ? (
                     <>

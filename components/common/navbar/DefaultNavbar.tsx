@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -11,10 +10,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCartStore } from "@/store/cartStore";
+import { useUser } from "@/store/userStore";
+import { ShoppingCart } from "lucide-react";
+import { toastSuccess } from "@/utils/toast";
 
 export default function DefaultNavbar() {
+  const {logout}=useUser()
+  const handleLogout=()=>
+  {
+    logout()
+    toastSuccess("Successfully Logged Out ")
+  }
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-100 bg-white shadow-md">
       <nav className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image src="/favicon.ico" alt="Logo" width={40} height={40} />
@@ -48,7 +57,7 @@ export default function DefaultNavbar() {
                 <Link href="/orders">View Orders</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/logout">Logout</Link>
+                <button onClick={handleLogout}>Logout</button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

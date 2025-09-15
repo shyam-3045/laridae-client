@@ -5,6 +5,8 @@ import "./globals.css";
 import ReactQuery from "@/lib/providers/tanstackQuerry.provider";
 import NavbarSwitcher from "@/components/common/navbar/NavbarSwitcher";
 import ToastProvider from "@/lib/providers/ToastProvider";
+import Footer from "@/components/layouts/footer";
+import WhatsAppButton from "@/components/common/whatsApp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,16 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${inter.className} antialiased`}
       >
-        <main>
-          <ReactQuery>
-            <ToastProvider/>
-            <NavbarSwitcher/>
-              {children}
-          </ReactQuery>
-    
-        </main>
-
+        <ReactQuery>
+          <ToastProvider />
+          <NavbarSwitcher />
+          <main>{children}</main>
+          <Footer />
+        </ReactQuery>
+          <WhatsAppButton />
       </body>
     </html>
   );
 }
+

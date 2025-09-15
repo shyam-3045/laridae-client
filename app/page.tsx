@@ -6,6 +6,10 @@ import getQueryClient from "../utils/queryClient";
 import { getAllProducts } from "@/hooks/services/getAllProducts";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
+import CategoryShowcase from "@/components/home-layouts/categoryShowcase";
+import WhyChooseUs from "@/components/home-layouts/WhyChooseUs";
+import StatsSection from "@/components/home-layouts/StatsSection";
+import TestimonialsSection from "@/components/home-layouts/TestimonialsSection";
 
 export const revalidate=300;
 
@@ -24,16 +28,24 @@ export default async function Home() {
     <div>
       <Link href={'/shop'}>
       <HeroSection />
+      
       </Link>
+   
       
       <AnnouncementBar />
       <AnimatedOnScroll>
         <div className="mt-9">
           <HydrationBoundary state={dehydratedState}>
-            <FeaturedProducts />
+              <FeaturedProducts />
+              <CategoryShowcase/>
+              <WhyChooseUs/>
+              <StatsSection/>
+              <TestimonialsSection/>
+              
           </HydrationBoundary>
         </div>
       </AnimatedOnScroll>
+      
     </div>
   );
 }

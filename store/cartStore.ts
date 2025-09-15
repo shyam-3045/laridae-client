@@ -9,8 +9,8 @@ import { Flag } from "lucide-react";
 interface addToCartPayload{
         product_id:string,
         quantity:number,
-        max:number,
-        min:number
+        max?:number,
+        min?:number
       }
 interface returnType{
   res:string,
@@ -20,6 +20,7 @@ type CartStore = {
   cart: CartProps[];
   cartTotal:number;
   addToCart: (item: addToCartPayload) =>returnType ;
+  decreaseQuantity:(product_id : string)=>void;
   clearCart: () => void;
   clearProduct:(id:string)=>CartProps[];
   setCartTotal:(total:number)=>void;
@@ -40,15 +41,16 @@ export const useCartStore = create<CartStore>()(
 
         let updatedCart = [...currentCart];
         
-        if(index !== -1 && updatedCart[index].quantity > max || index !== -1 && updatedCart[index].quantity + quantity >max )
+        if(min && max)
+        {
+          if(index !== -1 && updatedCart[index].quantity > max  || index !== -1 && updatedCart[index].quantity + quantity >max )
         {
           return ({
             res:"No product Found",
             flag:false
           })
         }
-        console.log(min)
-
+        }
         if (index !== -1) {
           
           updatedCart[index].quantity += quantity;
@@ -61,6 +63,28 @@ export const useCartStore = create<CartStore>()(
             res:"Item Added To Cart",
             flag:true
           })
+      },
+      decreaseQuantity:(product_id : string)=>
+      {
+        const currentCart = get().cart;
+        
+        const index = currentCart.findIndex(
+          (item) => item.product_id === product_id
+        );
+
+        let updatedCart = [...currentCart];
+        
+
+        if (index !== -1) {
+          
+          updatedCart[index].quantity -= 1 ;
+        } 
+        set({ cart: updatedCart });
+        return ({
+            res:"Item count decreased To Cart",
+            flag:true
+          })
+        
       },
 
       clearCart: () => set({ cart: [] }),

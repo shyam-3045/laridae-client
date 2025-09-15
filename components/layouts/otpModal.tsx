@@ -141,9 +141,9 @@ const handleVerify = () => {
   const startPayment=async()=>
   {
     const user = JSON.parse(localStorage.getItem("user-storage") as string);
-      const email = user.state.data.user;  
+    const email = user.state.data.user;  
     const order= await api.post("create-order",{
-      amount:500
+      amount:totalAmount
     })
     console.log(order)
     // 2. Open Razorpay Checkout

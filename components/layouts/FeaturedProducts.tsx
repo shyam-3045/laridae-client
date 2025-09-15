@@ -48,12 +48,8 @@ export default function FeaturedProducts() {
 
         <div className="flex justify-center mb-8">
           <div className="flex bg-gray-100 rounded-full p-1">
-            <button className="px-6 py-2 rounded-full bg-gray-900 text-white font-medium">
-              BEST SELLERS
-            </button>
-            <button className="px-6 py-2 rounded-full text-[#eac90b] font-medium hover:bg-gray-200 transition-colors">
-              WEBSITE EXCLUSIVE
-            </button>
+            
+            
           </div>
         </div>
 
@@ -72,7 +68,7 @@ export default function FeaturedProducts() {
 
       {/* View All Button */}
       <div className="text-center mt-12">
-        <Link href={'/shop'} className="bg-[#E40000] hover:bg-[#eac90b] hover:text-gray-900 text-white font-bold py-3 px-8 rounded-2xl transition-colors duration-300 transform hover:scale-105">
+        <Link href={'/shop'} className="bg-[#eac90b] hover:bg-[#eac90b] hover:text-gray-900 text-white font-bold py-3 px-8 rounded-2xl transition-colors duration-300 transform hover:scale-105">
           VIEW ALL
         </Link>
       </div>
