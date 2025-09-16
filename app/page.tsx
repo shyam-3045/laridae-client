@@ -37,14 +37,15 @@ export default async function Home() {
         <div className="mt-9">
           <HydrationBoundary state={dehydratedState}>
               <FeaturedProducts />
-              <CategoryShowcase/>
-              <WhyChooseUs/>
-              <StatsSection/>
-              <TestimonialsSection/>
+              
               
           </HydrationBoundary>
         </div>
       </AnimatedOnScroll>
+      <CategoryShowcase/>
+              <WhyChooseUs/>
+              <StatsSection/>
+              <TestimonialsSection/>
       
     </div>
   );

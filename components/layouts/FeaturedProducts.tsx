@@ -6,13 +6,14 @@ import { ProductCard } from "../common/ProductCard";
 import { useAllProducts } from "../../hooks/CustomHooks/useAllProducts";
 import { Product } from "@/types/product";
 import Link from "next/link";
+import Loading from "../common/loading";
 
 export default function FeaturedProducts() {
   const { data: product, isLoading } = useAllProducts();
   //const [currentIndex, setCurrentIndex] = useState(0);
 
   if (isLoading) {
-    return <p>...Loading</p>;
+    return <Loading/>;
   }
 
   // const renderStars = (rating) => {

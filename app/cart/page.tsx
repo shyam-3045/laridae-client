@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/common/loading";
 import CartPage from "@/components/layouts/cartPage";
 import { useAllProducts } from "@/hooks/CustomHooks/useAllProducts";
 import { useCartStore } from "@/store/cartStore";
@@ -34,7 +35,7 @@ export default function Cart() {
   return (
     <>
       
-      {isLoading ?(null):(
+      {isLoading ?(<Loading/>):(
         <CartPage allProducts={allProducts?.data}  cart={cart?cart:[]} clearCart={handleClearCart} clearProduct={handleClearProduct}/>
 
       )}
