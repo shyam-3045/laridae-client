@@ -8,8 +8,7 @@ export default function WhatsAppButton() {
       href="https://wa.me/918300350995?text=Hello%2C%20I%E2%80%99d%20like%20to%20know%20more%20about%20your%20products!"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-[999999] bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 block md:hidden"
-
+      className="fixed bottom-6 right-6 z-[999999] bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 block"
     >
       <svg
         stroke="currentColor"
