@@ -37,7 +37,7 @@ export default function DefaultNavbar() {
 
         {/* Desktop Menu (only visible md and above) */}
         <div className="hidden md:flex gap-10 text-black">
-          {["Home", "Shop", "B2B", "Contact"].map((label) => (
+          {["Home", "Shop", "B2B","FlavoredTeas", "Contact"].map((label) => (
             <Link
               key={label}
               href={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}

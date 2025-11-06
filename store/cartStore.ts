@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CartProps } from "@/types/common";
-import { json } from "zod";
-import { error } from "console";
-import { Flag } from "lucide-react";
+
 
 
 interface addToCartPayload{

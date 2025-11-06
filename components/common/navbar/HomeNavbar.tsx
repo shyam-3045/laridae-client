@@ -58,7 +58,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex gap-15">
-          {["Home", "Shop", "B2B", "Contact"].map((label) => (
+          {["Home", "Shop", "B2B","FlavoredTeas", "Contact"].map((label) => (
             <Link
               key={label}
               href={`/${

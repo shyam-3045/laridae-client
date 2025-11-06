@@ -28,7 +28,6 @@ export default async function Home() {
     <div>
       <Link href={'/shop'}>
       <HeroSection />
-      
       </Link>
    
       

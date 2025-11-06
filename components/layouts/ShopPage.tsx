@@ -30,17 +30,32 @@ const ShopPage = ({ shopFlag }: Props) => {
   useEffect(() => {
     if (!products?.data) return;
 
-    const initialProducts =
-      shopFlag === 1
-        ? products.data.filter(
+    if(shopFlag === 1 )
+    {
+      const initialProducts = products.data.filter(
             (item: Product) => item.shopFlag === 1 || item.shopFlag === 3
           )
-        : products.data.filter(
+        setOriginalProducts(initialProducts);
+      setFilteredProducts(initialProducts);
+    }
+    if(shopFlag === 2 )
+    {
+      const initialProducts = products.data.filter(
             (item: Product) => item.shopFlag === 2 || item.shopFlag === 3
-          );
-
-    setOriginalProducts(initialProducts);
+          )
+          setOriginalProducts(initialProducts);
     setFilteredProducts(initialProducts);
+    }
+    if(shopFlag === 4)
+    {
+      const initialProducts = products.data.filter(
+            (item: Product) => item.shopFlag === 4)
+            setOriginalProducts(initialProducts);
+    setFilteredProducts(initialProducts);
+    }
+  
+
+    
   }, [products, shopFlag]);
 
   useEffect(() => {
@@ -67,7 +82,7 @@ const ShopPage = ({ shopFlag }: Props) => {
  const filterOptions = [
   { name: "Asafoetida", id: 1 },
   { name: "Laridae", id: 2 },
-  { name: "Gram Flour", id: 3 }, // ✅ match the FilterState key
+  { name: "Gram Flour", id: 3 }, 
 ];
 
 
@@ -134,7 +149,7 @@ const ShopPage = ({ shopFlag }: Props) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters Sidebar */}
-            <div className="w-full lg:w-72 lg:flex-shrink-0">
+            {shopFlag === 4 ? null : <div className="w-full lg:w-72 lg:flex-shrink-0">
               <div className="bg-white/90 backdrop-blur-sm lg:sticky lg:top-8 rounded-xl shadow-xl border border-amber-100/60 p-6">
                 <div className="flex items-center mb-6">
                   <div className="h-8 w-1 bg-gradient-to-b from-[#C5A572] to-amber-500 rounded-full mr-3"></div>
@@ -164,11 +179,12 @@ const ShopPage = ({ shopFlag }: Props) => {
                       </div>
                     </div>
                   ))}
+                  
                 </div>
 
                 
               </div>
-            </div>
+            </div>}
 
             {/* Products Grid */}
             <div className="flex-1">
