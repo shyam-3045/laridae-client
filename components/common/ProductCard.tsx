@@ -72,7 +72,13 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-in-out group-hover:scale-110 group-hover:opacity-0"
+            />
+            <Image
+              src={product.images.length > 1 ?product.images[1].url : product.images[0].url}
+              alt={product.name}
+              fill
+              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:scale-103 group-hover:opacity-100"
             />
           </div>
         </div>

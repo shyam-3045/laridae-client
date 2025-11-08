@@ -42,10 +42,10 @@ export default async function Home() {
         </div>
       </AnimatedOnScroll>
       <CategoryShowcase/>
-              <WhyChooseUs/>
-              <StatsSection/>
-              <TestimonialsSection/>
-      
+      <WhyChooseUs/>
+      <StatsSection/>
+      <TestimonialsSection/>
+  
     </div>
   );
 }
