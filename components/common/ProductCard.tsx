@@ -12,6 +12,7 @@ interface Props {
 }
 
 export function ProductCard({ product, isOtherProducts = false }: Props) {
+  const {openCart}=useCartStore()
   const addToCart = useCartStore.getState().addToCart;
   const router = useRouter();
   const variant = product.variants[0];
@@ -129,7 +130,9 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
       {!isOtherProducts && (
         <div className="p-4 pt-0">
           <button
-            onClick={() => handleAddToCart(product._id, product.shopFlag)}
+            onClick={() =>{ handleAddToCart(product._id, product.shopFlag)
+              openCart()
+            }}
             className="w-full bg-gradient-to-r from-[#E40000] to-[#E40000] hover:from-[#eac90b] hover:to-[#eac90b] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm"
           >
             <ShoppingCart className="w-4 h-4" />

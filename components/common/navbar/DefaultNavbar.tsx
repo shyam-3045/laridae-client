@@ -14,16 +14,19 @@ import { useUser } from "@/store/userStore";
 import { ShoppingCart, Menu } from "lucide-react";
 import { toastSuccess } from "@/utils/toast";
 import { useState } from "react";
+import { useCartStore } from "@/store/cartStore";
 
 export default function DefaultNavbar() {
   const { logout } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const { openCart } = useCartStore()
 
   const handleLogout = () => {
     logout();
     toastSuccess("Successfully Logged Out ");
   };
 
+ 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -37,7 +40,7 @@ export default function DefaultNavbar() {
 
         {/* Desktop Menu (only visible md and above) */}
         <div className="hidden md:flex gap-10 text-black">
-          {["Home", "Shop", "B2B","FlavoredTeas", "Contact"].map((label) => (
+          {["Home", "Shop", "Contact"].map((label) => (
             <Link
               key={label}
               href={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
@@ -50,9 +53,10 @@ export default function DefaultNavbar() {
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
-          <Link href="/cart">
+          <button onClick={openCart}>
             <ShoppingCart />
-          </Link>
+          </button>
+          
 
           <DropdownMenu>
             <DropdownMenuTrigger>

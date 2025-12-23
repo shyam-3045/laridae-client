@@ -1,13 +1,13 @@
 import { Bounce, toast } from "react-toastify";
 
 const baseConfig = {
-  className: "toast-auto", // 👈 hook into CSS
+  className: "toast-auto",
   position: "top-center" as const,
-  autoClose: 3500,
-  hideProgressBar: false,
-  closeOnClick: false,
+  autoClose: 3250,
+  hideProgressBar: true,
+  closeOnClick: true,
   pauseOnHover: false,
-  draggable: true,
+  draggable: false,
   progress: undefined,
   theme: "light" as const,
   transition: Bounce,

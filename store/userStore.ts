@@ -5,7 +5,7 @@ type Data={
   user:string
 }
 interface UserState {
-  isLogged: boolean;
+  isLogged: boolean
   data:Data
   login: (data:Data) => void;
   logout: () => void;
@@ -29,9 +29,11 @@ export const useUser = create<UserState>()(
         });
       },
 
+    
+
       logout: () => {
         set({
-          isLogged: false,
+          isLogged: false
           
         });
       },

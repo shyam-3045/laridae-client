@@ -9,8 +9,8 @@ const ToastProvider = () => {
     <ToastContainer
       position="top-right"
       autoClose={3500}
-      hideProgressBar={false}
-      newestOnTop={false}
+      hideProgressBar={true}
+      newestOnTop={true}
       closeOnClick={false}
       rtl={false}
       pauseOnFocusLoss

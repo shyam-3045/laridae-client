@@ -10,7 +10,6 @@ import LoginModal from "./loginModal";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { orginalCart } from "@/types/cart";
-import { Underdog } from "next/font/google";
 import { toastFailure } from "@/utils/toast";
 
 type Props = {
@@ -25,7 +24,7 @@ const CartPage = ({ allProducts, cart, clearCart, clearProduct }: Props) => {
   const { setCartTotal, decreaseQuantity, addToCart } = useCartStore()
   const [openModal, setOpenModal] = useState<boolean>(false)
   
-  const { login, checkAuth, isLogged } = useUser()
+  const { isLogged } = useUser()
   
   const orginalCart = cart.map((item) => {
     const products = allProducts.find(

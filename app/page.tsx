@@ -10,11 +10,11 @@ import CategoryShowcase from "@/components/home-layouts/categoryShowcase";
 import WhyChooseUs from "@/components/home-layouts/WhyChooseUs";
 import StatsSection from "@/components/home-layouts/StatsSection";
 import TestimonialsSection from "@/components/home-layouts/TestimonialsSection";
+import DiscountModel from "@/components/common/DiscountModel";
 
 export const revalidate=300;
 
-export default async function Home() {
-  
+export default async function Home() {  
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
@@ -29,15 +29,12 @@ export default async function Home() {
       <Link href={'/shop'}>
       <HeroSection />
       </Link>
-   
-      
+      <DiscountModel/>      
       <AnnouncementBar />
       <AnimatedOnScroll>
         <div className="mt-9">
           <HydrationBoundary state={dehydratedState}>
               <FeaturedProducts />
-              
-              
           </HydrationBoundary>
         </div>
       </AnimatedOnScroll>

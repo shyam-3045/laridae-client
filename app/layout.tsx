@@ -3,10 +3,11 @@ import { Geist } from "next/font/google";
 import { Inter } from 'next/font/google'
 import "./globals.css";
 import ReactQuery from "@/lib/providers/tanstackQuerry.provider";
-import NavbarSwitcher from "@/components/common/navbar/NavbarSwitcher";
 import ToastProvider from "@/lib/providers/ToastProvider";
 import Footer from "@/components/layouts/footer";
 import WhatsAppButton from "@/components/common/whatsApp";
+import DefaultNavbar from "@/components/common/navbar/DefaultNavbar";
+import CartDrawer from "@/components/layouts/CartDrawer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
         className={`${geistSans.variable} ${inter.className} antialiased`}
       >
         <ReactQuery>
           <ToastProvider />
-          <NavbarSwitcher />
+          <DefaultNavbar />
+          <CartDrawer/>
           <main>{children}</main>
           <Footer />
         </ReactQuery>
