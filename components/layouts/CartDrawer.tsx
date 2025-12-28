@@ -5,6 +5,7 @@ import { X, ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { useAllProducts } from '@/hooks/CustomHooks/useAllProducts';
 import { toastSuccess } from '@/utils/toast';
+import { useRouter } from 'next/navigation';
 
 interface CartItem {
   id: number;
@@ -17,7 +18,9 @@ interface CartItem {
 
 export default function CartDrawer() {
   const {cartOpen , closeCart ,cart,decreaseQuantity,addToCart,clearProduct}=useCartStore()
-  const {data:allProducts,isLoading,isError,error}=useAllProducts()
+  const {data:allProducts}=useAllProducts()
+  const router = useRouter()
+
 
   const cartProducts = cart.map((item : any)=>
   {
@@ -29,9 +32,18 @@ export default function CartDrawer() {
     }
   }
 )
- console.log(cartProducts)
-  const subtotal = cartProducts.reduce((sum, item) => sum + item.products.variants[0].discountedPrice * item.quantity, 0);
+ if(!cartOpen)
+ {
+   return
+ }
+ const handleSubmit =()=>
+ {
+    closeCart()
+    router.push("/payment")
+ }
+  const subtotal = cartProducts.reduce((sum, item) => sum + item?.products?.variants[0].discountedPrice * item.quantity, 0);
   const tax = subtotal * 0.1;
+  
   const total = subtotal + tax;
   return (
     <>
@@ -134,6 +146,7 @@ export default function CartDrawer() {
             <button
               className="w-full py-4 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02] active:scale-[0.98]"
               style={{ backgroundColor: '#E40000' }}
+              onClick={()=>handleSubmit()}
             >
               Proceed to Checkout
             </button>

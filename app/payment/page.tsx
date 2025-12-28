@@ -8,6 +8,7 @@ import { addUserDetails } from '@/hooks/CustomHooks/auth';
 import OtpModal from '@/components/layouts/otpModal';
 import { sendOtpReq } from '@/hooks/CustomHooks/otp';
 import { useCartStore } from '@/store/cartStore';
+import { useAllProducts } from '@/hooks/CustomHooks/useAllProducts';
 
 
 
@@ -31,6 +32,8 @@ export type DeliveryFormData = z.infer<typeof deliverySchema>;
 
 const PaymentPage: React.FC = () => {
   const {mutate:sendOtp,data,isError:otpisError,error:otpError}=sendOtpReq()
+  const  {cart }=useCartStore()
+  const {data : allProducts}=useAllProducts()
   const {
     register,
     handleSubmit,
@@ -51,6 +54,22 @@ const PaymentPage: React.FC = () => {
   const [delivarydetails,setDelivaruDetails]=useState<DeliveryFormData>()
   const [otpModal,setOtpModal]=useState(false)
   const {data:userData,isPending,isError,error,mutate:addUser}=addUserDetails()
+  
+
+  const cartProducts = cart.map((prod) =>{
+    const product = allProducts?.data.find((item:any)=>item._id == prod.product_id)
+
+    return {
+      ...prod,
+      product
+    }
+  }
+  )
+
+
+  console.log("cartProducts",cartProducts)
+
+
   const onSubmit = async (data: DeliveryFormData) => {
     try {
       const user=JSON.parse(localStorage.getItem('user-storage') as string)
@@ -72,6 +91,7 @@ const PaymentPage: React.FC = () => {
  {
   setOtpModal(false)
  }
+ 
   return (
     <div>
       <div className="min-h-screen bg-gray-50">
@@ -277,6 +297,16 @@ const PaymentPage: React.FC = () => {
     </div>
     <div>
       {otpModal && <OtpModal isOpen={otpModal} onClose={onClose} delivarydetails={delivarydetails} totalAmount={useCartStore.getState().cartTotal} products={useCartStore.getState().cart}/>}
+    </div>
+    <div>
+      {
+        cartProducts.length > 0 ?(
+        cartProducts?.map(prod =>
+        (
+          <div key={prod.product_id}>{prod.product?.name}</div>
+        ))
+      ):(null)
+      }
     </div>
     </div>
   );

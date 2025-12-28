@@ -4,7 +4,7 @@ import { useAllProducts } from "@/hooks/CustomHooks/useAllProducts";
 import { ProductCard } from "../common/ProductCard";
 import { Product } from "@/types/product";
 import AnnouncementBar from "../common/AnnouncementBar";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 
 type Props = {
   shopFlag: number;
@@ -14,6 +14,7 @@ type FilterState = {
   Asafoetida: boolean;
   Laridae: boolean;
   GramFlour: boolean;
+  FlowerBasedTea :boolean;
   [key: string]: boolean;
 };
 
@@ -25,6 +26,7 @@ const ShopPage = ({ shopFlag }: Props) => {
     Asafoetida: false,
     Laridae: false,
     GramFlour: false,
+    FlowerBasedTea:false
   });
 
   useEffect(() => {
@@ -59,30 +61,33 @@ const ShopPage = ({ shopFlag }: Props) => {
   }, [products, shopFlag]);
 
   useEffect(() => {
-    if (originalProducts.length === 0) return;
+  if (originalProducts.length === 0) return;
 
-    const activeFilters = Object.entries(filter)
-      .filter(([_, value]) => value)
-      .map(([key]) => key.toLowerCase());
+  const activeFilters = Object.entries(filter)
+    .filter(([_, value]) => value)
+    .map(([key]) => key.toLowerCase());
 
-    if (activeFilters.length === 0) {
-      setFilteredProducts(originalProducts);
-      return;
-    }
+  if (activeFilters.length === 0) {
+    setFilteredProducts(originalProducts);
+    return;
+  }
 
-    const newFilteredProducts = originalProducts.filter((product) =>
-      activeFilters.some((filter) =>
-        product.name.toLowerCase().includes(filter)
-      )
-    );
+  const newFilteredProducts = originalProducts.filter(product =>
+    activeFilters.some(f =>
+      product.name.toLowerCase().includes(f) ||
+      product.category.toLowerCase() === f
+    )
+  );
 
-    setFilteredProducts(newFilteredProducts);
-  }, [filter, originalProducts]);
+  setFilteredProducts(newFilteredProducts);
+}, [filter, originalProducts]);
+  
 
  const filterOptions = [
   { name: "Asafoetida", id: 1 },
   { name: "Laridae", id: 2 },
   { name: "Gram Flour", id: 3 }, 
+  { name: "Flower Based Tea" , id: 4}
 ];
 
 
@@ -225,7 +230,7 @@ const ShopPage = ({ shopFlag }: Props) => {
                       Try adjusting your filters to discover more options.
                     </p>
                     <button 
-                      onClick={() => setFilter({ Asafoetida: false, Laridae: false, GramFlour: false })}
+                      onClick={() => setFilter({ Asafoetida: false, Laridae: false, GramFlour: false,FlowerBasedTea:false })}
                       className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-[#C5A572] to-amber-500 text-white font-medium hover:from-amber-600 hover:to-orange-500 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
