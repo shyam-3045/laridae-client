@@ -22,29 +22,34 @@ export default function CartDrawer() {
   const router = useRouter()
 
 
-  const cartProducts = cart.map((item : any)=>
-  {
-    const products = allProducts?.data.find((prod:any)=> prod._id == item.product_id )
- 
+const cartProducts = cart
+  .map((item: any) => {
+    const product = allProducts?.data?.find(
+      (prod: any) => prod._id === item.product_id
+    );
+
+    if (!product) return null;
+
     return {
       ...item,
-      products
-    }
-  }
-)
- if(!cartOpen)
- {
-   return
- }
+      product,
+    };
+  })
+  .filter(Boolean);
+
+
+if (!cartOpen) return null;
+if (!allProducts?.data) return null;
+if (cartProducts.length === 0) return null;
+
  const handleSubmit =()=>
  {
     closeCart()
     router.push("/payment")
  }
-  const subtotal = cartProducts.reduce((sum, item) => sum + item?.products?.variants[0].discountedPrice * item.quantity, 0);
-  const tax = subtotal * 0.1;
+  const subtotal = cartProducts.reduce((sum, item) => sum + item?.products?.variants[0]?.discountedPrice   * item.quantity, 0);
   
-  const total = subtotal + tax;
+  const total = subtotal ;
   return (
     <>
       <div
@@ -71,7 +76,7 @@ export default function CartDrawer() {
 
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ height: 'calc(100vh - 280px)' }}>
-          {cartProducts.length === 0 ? (
+          {cartProducts.length <= 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400">
               <ShoppingCart className="w-16 h-16 mb-4" />
               <p className="text-lg">Your cart is empty</p>
@@ -80,14 +85,14 @@ export default function CartDrawer() {
             cartProducts.map(item => (
               <div key={item.product_id} className="flex gap-4 bg-gray-50 p-4 rounded-lg">
                 <img
-                  src={item.products.images[0].url}
-                  alt={item.products.name}
+                  src={item?.products?.images[0].url}
+                  alt={item?.products?.name}
                   className="w-20 h-20 object-cover rounded-lg"
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.products.name}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-1">{item?.products?.name}</h3>
                   <p className="text-lg font-bold" style={{ color: '#E40000' }}>
-                    ₹{item.products.variants[0].discountedPrice.toFixed(2) * item.quantity}
+                    ₹{item?.products?.variants[0]?.discountedPrice?.toFixed(2) * item?.quantity}
                   </p>
                   
                   {/* Quantity Controls */}
@@ -98,7 +103,7 @@ export default function CartDrawer() {
                     >
                       <Minus className="w-4 h-4" />
                     </button>
-                    <span className="font-semibold w-8 text-center">{item.quantity}</span>
+                    <span className="font-semibold w-8 text-center">{item?.quantity}</span>
                     <button
                       onClick={() => addToCart({ product_id :item.product_id, quantity: 1 }) }
                       className="p-1 rounded-md hover:bg-gray-200 transition-colors"
@@ -134,7 +139,7 @@ export default function CartDrawer() {
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>Tax (10%)</span>
-                <span>₹{tax.toFixed(2)}</span>
+                <span>₹{10.90.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t">
                 <span>Total</span>

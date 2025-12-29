@@ -6,9 +6,10 @@ export default function ImageSlider() {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const images = [
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=3334&h=1872&fit=crop',
-    'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=3334&h=1872&fit=crop',
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=3334&h=1872&fit=crop'
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989543/Website_Scroller_image_Mobile_1_1_ekh0lm.png',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989536/Website_Scroller_image_Mobile_2_1_krhw4c.png',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989528/Website_Scroller_image_Mobile_3_1_dwbiif.png',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989515/Website_Scroller_image_Mobile_4_1_boszvi.png'
   ];
 
   useEffect(() => {

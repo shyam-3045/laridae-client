@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { json, z } from 'zod';
-import { MapPin, Phone, Home, Navigation, ArrowLeft, Truck } from 'lucide-react';
+import { z } from 'zod';
+import { MapPin, Phone, Home, Navigation, ArrowLeft, Truck, ShoppingBag } from 'lucide-react';
 import { addUserDetails } from '@/hooks/CustomHooks/auth';
 import OtpModal from '@/components/layouts/otpModal';
 import { sendOtpReq } from '@/hooks/CustomHooks/otp';
@@ -38,9 +38,14 @@ const PaymentPage: React.FC = () => {
     register,
     handleSubmit,
     reset,
+    control,
+    
     formState: { errors, isSubmitting }
   } = useForm<DeliveryFormData>({
     resolver:zodResolver(deliverySchema),
+    mode : "onChange",
+    shouldUnregister : true,
+
     defaultValues: {
       address: '',
       pincode: '',
@@ -51,6 +56,8 @@ const PaymentPage: React.FC = () => {
       setAsDefault: false
     }
   });
+
+  const pincode = useWatch({control,name: "pincode"});
   const [delivarydetails,setDelivaruDetails]=useState<DeliveryFormData>()
   const [otpModal,setOtpModal]=useState(false)
   const {data:userData,isPending,isError,error,mutate:addUser}=addUserDetails()
@@ -101,35 +108,78 @@ const PaymentPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[calc(100vh-200px)]">
       
-          <div className="flex items-center justify-center bg-gradient-to-br from-red-50 to-indigo-100 rounded-2xl p-8">
-            <div className="text-center">
-              <div className="w-64 h-64 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-lg">
-                <div className="relative">
-                  <Truck size={80} className="text-red-600" />
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+          
+          <div className="bg-white rounded-2xl shadow-lg p-8 overflow-y-auto max-h-[calc(100vh-120px)]">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                <ShoppingBag size={24} className="mr-2 text-red-600" />
+                Order Summary
+              </h2>
+              <p className="text-gray-600">
+                {cartProducts.length} {cartProducts.length === 1 ? 'item' : 'items'} in your cart
+              </p>
+            </div>
+
+            {cartProducts.length > 0 ? (
+              <div className="space-y-4">
+                {cartProducts.map((prod) => (
+                  <div key={prod.product_id} className="flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                   
+                    <div className="flex-shrink-0 w-24 h-24 bg-white rounded-lg overflow-hidden border border-gray-200">
+                      {prod.product?.images && prod.product.images.length > 0 ? (
+                        <img 
+                          src={prod.product.images[0].url || prod.product.images[0]} 
+                          alt={prod.product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <ShoppingBag size={32} className="text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+
+                 
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
+                        {prod.product?.name || 'Product Name'}
+                      </h3>
+                      <p className="text-xs text-gray-600 mb-2">
+                        {prod.product?.category || 'Category'}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-700">
+                          Qty: <span className="font-semibold">{prod.quantity}</span>
+                        </span>
+                        {prod.product?.variants && prod.product.variants.length > 0 && (
+                          <span className="text-sm font-bold text-red-600">
+                            ₹{prod.product.variants[0].price}
+                          </span>
+                        )}
+                      </div>
+                      {prod.product?.packaging && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          📦 {prod.product.packaging}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <div className="flex justify-between items-center text-lg font-bold">
+                    <span className="text-gray-900">Total Amount:</span>
+                    <span className="text-red-600">₹{useCartStore.getState().cartTotal}</span>
                   </div>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Fast & Reliable Delivery
-              </h2>
-              <p className="text-gray-600 text-lg leading-relaxed max-w-md">
-                We deliver to your doorstep with care and precision. Add your delivery address to get started with seamless shopping experience.
-              </p>
-              <div className="mt-8 grid grid-cols-2 gap-4 text-sm">
-  <div className="bg-white rounded-lg p-4 shadow-sm">
-    <div className="font-semibold text-gray-900">Fast & Reliable</div>
-    <div className="text-gray-600">Quick delivery for all your orders</div>
-  </div>
-  <div className="bg-white rounded-lg p-4 shadow-sm">
-    <div className="font-semibold text-gray-900">Hassle-Free Service</div>
-    <div className="text-gray-600">Smooth process from checkout to doorstep</div>
-  </div>
-</div>
-
-              
-            </div>
+            ) : (
+              <div className="text-center py-12">
+                <ShoppingBag size={64} className="mx-auto text-gray-300 mb-4" />
+                <p className="text-gray-500 text-lg">Your cart is empty</p>
+              </div>
+            )}
           </div>
 
          
@@ -152,7 +202,8 @@ const PaymentPage: React.FC = () => {
                 </label>
                 <textarea
                   id="address"
-                  {...register('address')}
+                  {...register('address')
+                  }
                   rows={3}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors ${
                     errors.address ? 'border-red-500' : 'border-gray-300'
@@ -286,7 +337,7 @@ const PaymentPage: React.FC = () => {
                       Saving...
                     </>
                   ) : (
-                    'Save Address'
+                    'Save Address & Continue'
                   )}
                 </button>
               </div>
@@ -297,16 +348,6 @@ const PaymentPage: React.FC = () => {
     </div>
     <div>
       {otpModal && <OtpModal isOpen={otpModal} onClose={onClose} delivarydetails={delivarydetails} totalAmount={useCartStore.getState().cartTotal} products={useCartStore.getState().cart}/>}
-    </div>
-    <div>
-      {
-        cartProducts.length > 0 ?(
-        cartProducts?.map(prod =>
-        (
-          <div key={prod.product_id}>{prod.product?.name}</div>
-        ))
-      ):(null)
-      }
     </div>
     </div>
   );
