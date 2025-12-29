@@ -6,10 +6,10 @@ export default function ImageSlider() {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const images = [
-    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989543/Website_Scroller_image_Mobile_1_1_ekh0lm.png',
-    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989536/Website_Scroller_image_Mobile_2_1_krhw4c.png',
-    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989528/Website_Scroller_image_Mobile_3_1_dwbiif.png',
-    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1766989515/Website_Scroller_image_Mobile_4_1_boszvi.png'
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1767008925/c5b53c04-b794-4117-a94a-d80c58467088_hmvqgd.png',
+    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009075/13c2a662-374f-4bfd-b7be-b987a11c3975_ncrumi.png",
+    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009193/7d4f51a4-40b8-47b8-b686-4a7be68a91c7_uyjjin.png",
+    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009230/60de3de7-07f9-49e5-9c2b-7101d093c1e3_bp7zvm.png"
   ];
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function ImageSlider() {
         </div>
       </div>
 
-      {/* Navigation Dots */}
+      
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
         {images.map((_, index) => (
           <button

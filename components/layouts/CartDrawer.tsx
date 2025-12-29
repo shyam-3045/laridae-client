@@ -19,9 +19,7 @@ export default function CartDrawer() {
   const { data: allProducts } = useAllProducts();
   const router = useRouter();
 
-  /* -------------------------
-     MAP CART → PRODUCTS
-  -------------------------- */
+  
   const cartProducts = cart
     .map((item: any) => {
       const product = allProducts?.data?.find(
@@ -32,21 +30,16 @@ export default function CartDrawer() {
 
       return {
         ...item,
-        product, // ✅ SINGLE SOURCE OF TRUTH
+        product,
       };
     })
     .filter(Boolean);
 
-  /* -------------------------
-     EARLY RETURNS (SAFE)
-  -------------------------- */
   if (!cartOpen) return null;
   if (!allProducts?.data) return null;
   if (cartProducts.length === 0) return null;
 
-  /* -------------------------
-     PRICE CALCULATION (SAFE)
-  -------------------------- */
+
   const subtotal = cartProducts.reduce((sum: number, item: any) => {
     const price = item.product?.variants?.[0]?.discountedPrice;
 
@@ -63,9 +56,7 @@ export default function CartDrawer() {
     router.push('/payment');
   };
 
-  /* -------------------------
-     RENDER
-  -------------------------- */
+  
   return (
     <div
       className={`fixed top-0 right-0 h-full w-[420px] max-w-[90vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
@@ -89,7 +80,7 @@ export default function CartDrawer() {
         </button>
       </div>
 
-      {/* Items */}
+     
       <div
         className="flex-1 overflow-y-auto p-6 space-y-4"
         style={{ height: 'calc(100vh - 280px)' }}
@@ -117,7 +108,7 @@ export default function CartDrawer() {
                 ).toFixed(2)}
               </p>
 
-              {/* Quantity Controls */}
+            
               <div className="flex items-center gap-3 mt-2">
                 <button
                   onClick={() => decreaseQuantity(item.product_id)}
@@ -141,7 +132,7 @@ export default function CartDrawer() {
               </div>
             </div>
 
-            {/* Remove */}
+         
             <button
               onClick={() => {
                 clearProduct(item.product_id);
@@ -155,7 +146,7 @@ export default function CartDrawer() {
         ))}
       </div>
 
-      {/* Footer */}
+     
       <div className="border-t border-gray-200 p-6 space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between text-gray-600">
