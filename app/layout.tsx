@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 import "./globals.css";
+
 import ReactQuery from "@/lib/providers/tanstackQuerry.provider";
 import ToastProvider from "@/lib/providers/ToastProvider";
 import Footer from "@/components/layouts/footer";
@@ -9,14 +9,7 @@ import WhatsAppButton from "@/components/common/whatsApp";
 import DefaultNavbar from "@/components/common/navbar/DefaultNavbar";
 import CartDrawer from "@/components/layouts/CartDrawer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const inter = Inter({ subsets: ['latin'] })
-
-
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Laridae Premium Tea",
@@ -25,24 +18,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body
-        className={`${geistSans.variable} ${inter.className} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <ReactQuery>
           <ToastProvider />
           <DefaultNavbar />
-          <CartDrawer/>
+          <CartDrawer />
           <main>{children}</main>
           <Footer />
         </ReactQuery>
-          <WhatsAppButton />
+        <WhatsAppButton />
       </body>
     </html>
   );
 }
-
