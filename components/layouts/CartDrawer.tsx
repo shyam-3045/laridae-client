@@ -48,8 +48,8 @@ export default function CartDrawer() {
     return sum + price * item.quantity;
   }, 0);
 
-  const tax = subtotal * 0.1;
-  const total = subtotal + tax;
+ 
+  const total = subtotal
 
   const handleSubmit = () => {
     closeCart();
@@ -149,16 +149,6 @@ export default function CartDrawer() {
      
       <div className="border-t border-gray-200 p-6 space-y-4">
         <div className="space-y-2">
-          <div className="flex justify-between text-gray-600">
-            <span>Subtotal</span>
-            <span>₹{subtotal.toFixed(2)}</span>
-          </div>
-
-          <div className="flex justify-between text-gray-600">
-            <span>Tax (10%)</span>
-            <span>₹{tax.toFixed(2)}</span>
-          </div>
-
           <div className="flex justify-between text-xl font-bold pt-2 border-t">
             <span>Total</span>
             <span className="text-red-600">₹{total.toFixed(2)}</span>
