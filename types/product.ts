@@ -15,7 +15,8 @@ export interface Product {
   images: Image[];
   shopFlag:number,
   MAX:number,
-  MOQ:number
+  MOQ:number,
+  isAvailable:boolean
 
 }
 export interface Review {

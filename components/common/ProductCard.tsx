@@ -2,7 +2,7 @@
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/product";
 import { toastFailure, toastSuccess } from "@/utils/toast";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Clock } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function ProductCard({ product, isOtherProducts = false }: Props) {
-  const {openCart}=useCartStore()
+  const { openCart } = useCartStore();
   const addToCart = useCartStore.getState().addToCart;
   const router = useRouter();
   const variant = product.variants[0];
@@ -28,8 +28,10 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
     ));
   };
 
-  const handlePageChange = (name: string, id: string) => {
-    router.push(`/product/${name}?id=${id}`);
+  const handlePageChange = (name: string, id: string, isAvailable: boolean) => {
+    if (isAvailable) {
+      router.push(`/product/${name}?id=${id}`);
+    }
   };
 
   const handleAddToCart = (id: string, shopFlag: number) => {
@@ -49,25 +51,31 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
 
   // Calculate discount percentage
   const discountPercentage = variant.price
-    ? Math.round(((variant.price - variant.discountedPrice) / variant.price) * 100)
+    ? Math.round(
+        ((variant.price - variant.discountedPrice) / variant.price) * 100
+      )
     : 0;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100 h-full flex flex-col">
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100 h-full flex flex-col relative">
       {/* Clickable content area */}
-      <div 
-        onClick={() => handlePageChange(product.name, product._id)}
-        className="cursor-pointer flex-1 flex flex-col"
+      <div
+        onClick={() =>
+          handlePageChange(product.name, product._id, product.isAvailable)
+        }
+        className={`flex-1 flex flex-col ${
+          product.isAvailable ? "cursor-pointer" : "cursor-default"
+        }`}
       >
         {/* Image Section */}
         <div className="relative p-4 bg-gradient-to-br from-gray-50 to-gray-100">
           {/* Discount Badge */}
-          {discountPercentage > 0 && (
-            <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
-              -{discountPercentage}%
+          {discountPercentage > 0 && product.isAvailable && (
+            <div className="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full z-10 shadow-lg">
+              -{discountPercentage}% OFF
             </div>
           )}
-          
+
           <div className="aspect-square bg-white rounded-xl overflow-hidden shadow-sm">
             <Image
               src={product.images[0].url}
@@ -76,7 +84,11 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
               className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-in-out group-hover:scale-110 group-hover:opacity-0"
             />
             <Image
-              src={product.images.length > 1 ?product.images[1].url : product.images[0].url}
+              src={
+                product.images.length > 1
+                  ? product.images[1].url
+                  : product.images[0].url
+              }
               alt={product.name}
               fill
               className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:scale-103 group-hover:opacity-100"
@@ -84,15 +96,16 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
           </div>
         </div>
 
-        {/* Content Section - This will grow to fill available space */}
+        {/* Content Section */}
         <div className="p-4 flex-1 flex flex-col">
           {/* Rating Section */}
           <div className="flex items-center gap-1 mb-3">
             <div className="flex items-center">
               {renderStars(product.ratings)}
             </div>
-            <span className="ml-2 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-              {product.numOfReviews} reviews
+            <span className="ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+              {product.numOfReviews}{" "}
+              {product.numOfReviews === 1 ? "review" : "reviews"}
             </span>
           </div>
 
@@ -103,41 +116,61 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
 
           {/* Category */}
           <div className="mb-3">
-            <span className="inline-block bg-red-50 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
+            <span className="inline-block bg-gradient-to-r from-red-50 to-orange-50 text-red-700 text-xs font-semibold px-3 py-1 rounded-full border border-red-100">
               {product.category}
             </span>
           </div>
 
-          {/* Price Section - This will be pushed to bottom by flex-1 above */}
+          {/* Price Section */}
           <div className="mt-auto">
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-lg font-bold text-gray-900">
-                ₹{variant.discountedPrice.toLocaleString()}
-              </span>
-              {variant.price && variant.price !== variant.discountedPrice && (
-                <span className="text-sm text-gray-500 line-through">
-                  ₹{variant.price.toLocaleString()}
+            {product.isAvailable ? (
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-xl font-bold text-gray-900">
+                  ₹{variant.discountedPrice.toLocaleString()}
                 </span>
-              )}
-            </div>
-            
-           
+                {variant.price && variant.price !== variant.discountedPrice && (
+                  <span className="text-sm text-gray-500 line-through">
+                    ₹{variant.price.toLocaleString()}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className="mb-3">
+                <div className="relative inline-block">
+                  {/* Blurred price */}
+                  <span className="text-lg font-bold text-gray-400 blur-sm select-none">
+                    ₹{variant.discountedPrice.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Button Section - Always at bottom */}
+      {/* Button Section */}
       {!isOtherProducts && (
         <div className="p-4 pt-0">
-          <button
-            onClick={() =>{ handleAddToCart(product._id, product.shopFlag)
-              openCart()
-            }}
-            className="w-full bg-gradient-to-r from-[#E40000] to-[#E40000] hover:from-[#eac90b] hover:to-[#eac90b] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            ADD TO CART
-          </button>
+          {product.isAvailable ? (
+            <button
+              onClick={() => {
+                handleAddToCart(product._id, product.shopFlag);
+                openCart();
+              }}
+              className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-400 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm tracking-wide"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              ADD TO CART
+            </button>
+          ) : (
+            <button
+              disabled
+              className="w-full bg-gradient-to-r from-gray-300 to-gray-400 text-gray-600 font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-75"
+            >
+              <Clock className="w-5 h-5" />
+              COMING SOON
+            </button>
+          )}
         </div>
       )}
     </div>
