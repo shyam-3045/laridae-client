@@ -2,7 +2,7 @@
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/product";
 import { toastFailure, toastSuccess } from "@/utils/toast";
-import { Star, ShoppingCart, Clock } from "lucide-react";
+import { Star, ShoppingCart, Clock, StarHalf } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -18,14 +18,38 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
   const variant = product.variants[0];
 
   const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 ${
-          i < rating ? "text-amber-400 fill-current" : "text-gray-300"
-        }`}
-      />
-    ));
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    // Full stars
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <Star key={`full-${i}`} className="w-4 h-4 text-amber-400 fill-current" />
+      );
+    }
+
+    // Half star
+    if (hasHalfStar) {
+      stars.push(
+        <div key="half" className="relative w-4 h-4">
+          <Star className="w-4 h-4 text-gray-300 fill-current absolute" />
+          <div className="overflow-hidden w-1/2 absolute">
+            <Star className="w-4 h-4 text-amber-400 fill-current" />
+          </div>
+        </div>
+      );
+    }
+
+    // Empty stars
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
+      );
+    }
+
+    return stars;
   };
 
   const handlePageChange = (name: string, id: string, isAvailable: boolean) => {
@@ -98,16 +122,18 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
 
         {/* Content Section */}
         <div className="p-4 flex-1 flex flex-col">
-          {/* Rating Section */}
-          <div className="flex items-center gap-1 mb-3">
-            <div className="flex items-center">
-              {renderStars(product.ratings)}
+          {/* Rating Section - Only show if product is available */}
+          {product.isAvailable && (
+            <div className="flex items-center gap-1 mb-3">
+              <div className="flex items-center">
+                {renderStars(product.ratings)}
+              </div>
+              <span className="ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+                {product.ratings.toFixed(1)} ({product.numOfReviews}{" "}
+                {product.numOfReviews === 1 ? "review" : "reviews"})
+              </span>
             </div>
-            <span className="ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
-              {product.numOfReviews}{" "}
-              {product.numOfReviews === 1 ? "review" : "reviews"}
-            </span>
-          </div>
+          )}
 
           {/* Product Name */}
           <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5 group-hover:text-red-600 transition-colors min-h-[2.5rem]">

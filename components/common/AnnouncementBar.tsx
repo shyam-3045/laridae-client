@@ -1,12 +1,6 @@
 'use client';
 const messages = [
-  '🚚 Free shipping on orders over ₹500!',
-  '🔥 Flat 20% OFF on first purchase – Use code FIRST20',
-  '🕒 Limited time deal – Order before midnight!',
-  '⭐ 2,50,000+ 4.9 Star Ratings',
-  '🎉 Featured on the Ellen\'s Show',
-  '👥 6 Million Customers',
-  '🏆 Oprah\'s Favorite Things 2018 & 2019'
+  '🚚 Free shipping on First Order Above 20kgs',
 ];
 
 export default function AnnouncementBar() {
@@ -21,7 +15,7 @@ export default function AnnouncementBar() {
             </span>
           ))}
         </div>
-        {/* Duplicate set for seamless loop */}
+    
         <div className="flex shrink-0">
           {messages.map((message, index) => (
             <span key={`second-${index}`} className="px-8 inline-block">

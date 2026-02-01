@@ -3,53 +3,75 @@ import { useState, useEffect } from 'react';
 
 export default function ImageSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const images = [
-    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1767008925/c5b53c04-b794-4117-a94a-d80c58467088_hmvqgd.png',
-    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009075/13c2a662-374f-4bfd-b7be-b987a11c3975_ncrumi.png",
-    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009193/7d4f51a4-40b8-47b8-b686-4a7be68a91c7_uyjjin.png",
-    "https://res.cloudinary.com/dcyjehnyf/image/upload/v1767009230/60de3de7-07f9-49e5-9c2b-7101d093c1e3_bp7zvm.png"
+  // Desktop hero images
+  const desktopImages = [
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1769921971/Scroller_image_1_trail_page-0001-1_shrzar.jpg',
   ];
 
+  // Mobile hero images
+  const mobileImages = [
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1769921760/Scroller_image_1_trail_mobil_version_page-0001_qealop.jpg',
+  ];
+
+  const images = isMobile ? mobileImages : desktopImages;
+
+  // Detect mobile only for asset switching
   useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    check();
+    window.addEventListener('resize', check);
+
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Auto slide
+  useEffect(() => {
+    if (images.length <= 1) return;
+
     const interval = setInterval(() => {
-      setIsTransitioning(true);
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 3000);
 
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // Reset slide when switching image set
   useEffect(() => {
-    if (isTransitioning) {
-      const timeout = setTimeout(() => {
-        setIsTransitioning(false);
-      }, 500);
-      return () => clearTimeout(timeout);
-    }
-  }, [isTransitioning]);
+    setCurrentIndex(0);
+  }, [isMobile]);
 
-  const goToSlide = (index:number) => {
-    setIsTransitioning(true);
+  const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
 
   return (
-    <div className="relative w-full overflow-hidden bg-gray-900" style={{ height: '620px' }}>
+    <div
+      className="
+        relative w-full overflow-hidden bg-gray-900
+        h-[380px] sm:h-[420px] md:h-[480px] lg:h-[560px] xl:h-[620px]
+      "
+    >
       <div className="relative w-full h-full">
         <div
-          className="flex transition-transform duration-500 ease-in-out h-full"
+          className="flex h-full transition-transform duration-500 ease-in-out"
           style={{
-            transform: `translateX(-${currentIndex * 100}%)`
+            transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
           {images.map((src, index) => (
-            <div key={index} className="min-w-full h-full relative flex items-center justify-center">
+            <div
+              key={index}
+              className="min-w-full h-full flex items-center justify-center"
+            >
               <img
                 src={src}
                 alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
             </div>
@@ -57,21 +79,23 @@ export default function ImageSlider() {
         </div>
       </div>
 
-      
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              currentIndex === index
-                ? 'bg-white w-8'
-                : 'bg-white/50 hover:bg-white/75'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
+      {/* Dots */}
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`h-3 rounded-full transition-all duration-300 ${
+                currentIndex === index
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 w-3 hover:bg-white/75'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

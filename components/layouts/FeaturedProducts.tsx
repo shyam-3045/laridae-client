@@ -21,14 +21,39 @@ export default function FeaturedProducts() {
 
 const products: Product[] = product?.data ?? [];
 
+const getWeightInKg = (weight: string) => {
+  const w = weight.toLowerCase().trim();
+  const value = parseFloat(w);
+  if (isNaN(value)) return Infinity;
+  if (w.includes("kg")) return value;
+  if (w.includes("g")) return value / 1000;
+  return value;
+};
+
 const randomAvailableProducts = useMemo<Product[]>(() => {
-  return shuffleArray(
-    products.filter((p) => p.isAvailable)
-  ).slice(0, 4);
+
+  const filtered = products.filter((p) =>
+    p.isAvailable &&
+    p.variants?.some((v) => getWeightInKg(v.weight) < 5)
+  );
+
+  const shuffled = shuffleArray(filtered);
+
+  if (shuffled.length >= 4) return shuffled.slice(0, 4);
+
+  const remaining = shuffleArray(
+    products.filter(
+      (p) =>
+        p.isAvailable &&
+        !shuffled.find((x) => x._id === p._id)
+    )
+  );
+
+  return [...shuffled, ...remaining.slice(0, 4 - shuffled.length)];
+
 }, [products]);
 
 
-  // ✅ CONDITIONAL RETURN AFTER HOOKS
   if (isLoading) {
     return <Loading />;
   }
@@ -38,8 +63,8 @@ const randomAvailableProducts = useMemo<Product[]>(() => {
       <div>
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Discover Our <span className="text-[#E40000]">Premium</span>{" "}
-            Collection
+            Our <span className="text-[#E40000]">Best</span>{" "}
+            Sellers
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Handpicked teas that bring{" "}

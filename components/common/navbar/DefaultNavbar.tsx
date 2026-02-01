@@ -15,11 +15,18 @@ import { ShoppingCart, Menu } from "lucide-react";
 import { toastSuccess } from "@/utils/toast";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
+const navFont = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+});
 export default function DefaultNavbar() {
   const { logout } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const { openCart } = useCartStore()
+  
+
 
   const handleLogout = () => {
     logout();
@@ -30,16 +37,12 @@ export default function DefaultNavbar() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
+        
         <div className="flex items-center gap-2">
-          <Image src="/favicon.ico" alt="Logo" width={40} height={40} />
-          <span className="font-bold text-lg text-[#eac90b]">
-            <Link href="/">Laridae</Link>
-          </span>
+          <Image src="/logo.png" alt="Logo" width={125} height={100} />
         </div>
 
-        {/* Desktop Menu (only visible md and above) */}
-        <div className="hidden md:flex gap-10 text-black">
+        <div className={`hidden md:flex gap-10 text-black ${navFont.className}`}>
           {["Home", "Shop", "Contact"].map((label) => (
             <Link
               key={label}
@@ -61,7 +64,7 @@ export default function DefaultNavbar() {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src="/avatar.png" />
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -91,8 +94,8 @@ export default function DefaultNavbar() {
 
       {/* Mobile Dropdown (only below md) */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t shadow-md px-4 py-3 space-y-2">
-          {["Home", "Shop", "B2B", "Contact"].map((label) => (
+        <div className={`md:hidden bg-white border-t shadow-md px-4 py-3 space-y-2 ${navFont.className}`}>
+          {["Home", "Shop", "Contact"].map((label) => (
             <Link
               key={label}
               href={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
