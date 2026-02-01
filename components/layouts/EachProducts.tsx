@@ -34,7 +34,7 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
   }
 
   const otherProducts = allProducts.filter(
-    (item: Product) => item._id.toString() !== products._id.toString()
+    (item: Product) => item._id.toString() !== products._id.toString() && item.isAvailable
   );
 
   const productSpecs = [
