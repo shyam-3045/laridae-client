@@ -5,7 +5,7 @@ const CategoryShowcase = () => {
   const categories = [
     {
       id: 1,
-      image: "/images/categories/tea.jpg",
+      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770033386/90f874be-915e-4c34-913c-afa2e1f9655d.png",
       href: "/shop",
     },
     {
@@ -16,11 +16,6 @@ const CategoryShowcase = () => {
     {
       id: 3,
       image: "/images/categories/hing.jpg",
-      href: "/shop",
-    },
-    {
-      id: 4,
-      image: "/images/categories/tea.jpg",
       href: "/shop",
     },
   ];
