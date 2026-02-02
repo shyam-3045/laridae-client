@@ -8,11 +8,16 @@ export default function ImageSlider() {
   // Desktop hero images
   const desktopImages = [
     'https://res.cloudinary.com/dcyjehnyf/image/upload/v1769921971/Scroller_image_1_trail_page-0001-1_shrzar.jpg',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1770004515/Screenshot_2026-02-02_092227_i3pttx.png',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1770004688/Screenshot_2026-02-02_092723_ogtudz.png'
+
   ];
 
   // Mobile hero images
   const mobileImages = [
     'https://res.cloudinary.com/dcyjehnyf/image/upload/v1769921760/Scroller_image_1_trail_mobil_version_page-0001_qealop.jpg',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1770004835/Screenshot_2026-02-02_092914_owjt0z.png',
+    'https://res.cloudinary.com/dcyjehnyf/image/upload/v1770004836/Screenshot_2026-02-02_093000_k6wcsz.png'
   ];
 
   const images = isMobile ? mobileImages : desktopImages;
