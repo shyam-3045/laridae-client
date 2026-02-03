@@ -21,32 +21,34 @@ const navFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["500", "600"],
 });
+
 export default function DefaultNavbar() {
   const { logout } = useUser();
   const [isOpen, setIsOpen] = useState(false);
-  const { openCart } = useCartStore()
-  
 
+  const { openCart, cart } = useCartStore();
 
   const handleLogout = () => {
     logout();
     toastSuccess("Successfully Logged Out ");
   };
 
- 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        
         <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Logo" width={125} height={100} />
+          <Link href={`/`} className="hover:text-[#eac90b]">
+            <Image src="/logo.png" alt="Logo" width={125} height={100} />
+          </Link>
         </div>
 
         <div className={`hidden md:flex gap-10 text-black ${navFont.className}`}>
           {["Home", "Shop", "Contact"].map((label) => (
             <Link
               key={label}
-              href={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
+              href={`/${
+                label.toLowerCase() === "home" ? "" : label.toLowerCase()
+              }`}
               className="hover:text-[#eac90b]"
             >
               {label}
@@ -55,11 +57,34 @@ export default function DefaultNavbar() {
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
-          <button onClick={openCart}>
-            <ShoppingCart />
-          </button>
-          
+        <div className="flex items-center gap-4 relative">
+          {/* Cart button with hover tooltip */}
+          <div className="relative group">
+            <button
+              onClick={() => {
+                if (cart.length > 0) openCart();
+              }}
+              aria-label="Cart"
+            >
+              <ShoppingCart />
+            </button>
+
+            {cart.length === 0 && (
+              <span
+                className="
+                  pointer-events-none
+                  absolute top-full mt-2 left-1/2 -translate-x-1/2
+                  whitespace-nowrap
+                  bg-black text-white text-xs px-2 py-1 rounded
+                  shadow-md
+                  opacity-0 group-hover:opacity-100
+                  transition
+                "
+              >
+                No items in cart
+              </span>
+            )}
+          </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -81,7 +106,7 @@ export default function DefaultNavbar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Mobile Hamburger (only visible below md) */}
+          {/* Mobile Hamburger */}
           <button
             className="block md:hidden"
             onClick={() => setIsOpen(!isOpen)}
@@ -92,13 +117,17 @@ export default function DefaultNavbar() {
         </div>
       </nav>
 
-      {/* Mobile Dropdown (only below md) */}
+      {/* Mobile Dropdown */}
       {isOpen && (
-        <div className={`md:hidden bg-white border-t shadow-md px-4 py-3 space-y-2 ${navFont.className}`}>
+        <div
+          className={`md:hidden bg-white border-t shadow-md px-4 py-3 space-y-2 ${navFont.className}`}
+        >
           {["Home", "Shop", "Contact"].map((label) => (
             <Link
               key={label}
-              href={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
+              href={`/${
+                label.toLowerCase() === "home" ? "" : label.toLowerCase()
+              }`}
               className="block py-2 hover:text-[#eac90b]"
               onClick={() => setIsOpen(false)}
             >

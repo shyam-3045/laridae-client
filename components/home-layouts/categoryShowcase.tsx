@@ -18,6 +18,11 @@ const CategoryShowcase = () => {
       image: "/images/categories/hing.jpg",
       href: "/shop",
     },
+    {
+      id: 4,
+      image: "/images/categories/hing.jpg",
+      href: "/shop",
+    },
   ];
 
   return (

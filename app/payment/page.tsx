@@ -126,9 +126,14 @@ const PaymentPage: React.FC = () => {
     }
   };
 
-  const Subtotal = cartProducts.reduce((sum, prod) => {
+  let  Subtotal = cartProducts.reduce((sum, prod) => {
     return sum + prod?.product?.variants[0]?.discountedPrice * prod.quantity;
   }, 0);
+
+  if(!!deliveryCharge)
+  {
+    Subtotal += deliveryCharge
+  }
 
   const onSubmit = async (data: DeliveryFormData) => {
     try {
@@ -268,7 +273,7 @@ const PaymentPage: React.FC = () => {
                     <div className="flex justify-between items-center pt-2 border-t border-gray-300">
                       <span className="font-bold text-gray-900">Total Amount:</span>
                       <span className="text-xl font-bold text-red-600">
-                        ₹{Subtotal.toLocaleString('en-IN')}
+                        ₹{Subtotal.toLocaleString('en-IN') }
                       </span>
                     </div>
                   </div>
