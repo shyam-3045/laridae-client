@@ -32,6 +32,7 @@ export default async function Home() {
       <DiscountModel/>      
       <AnnouncementBar />
       <AnimatedOnScroll>
+        <WhyChooseUs/>
         <div className="mt-9">
           <HydrationBoundary state={dehydratedState}>
               <FeaturedProducts />
@@ -39,7 +40,6 @@ export default async function Home() {
         </div>
       </AnimatedOnScroll>
       <CategoryShowcase/>
-      <WhyChooseUs/>
       <StatsSection/>
       <TestimonialsSection/>
   

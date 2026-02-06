@@ -43,11 +43,11 @@ export default function DefaultNavbar() {
         </div>
 
         <div className={`hidden md:flex gap-10 text-black ${navFont.className}`}>
-          {["Home", "Shop", "Contact"].map((label) => (
+          {["Home", "Shop", "Contact","Track Your Order"].map((label) => (
             <Link
               key={label}
               href={`/${
-                label.toLowerCase() === "home" ? "" : label.toLowerCase()
+                label.toLowerCase() === "home" ? "" : label.replace(/\s+/g, "").toLowerCase() === "trackyourorder"?"trackyourorder" : label.toLowerCase()
               }`}
               className="hover:text-[#eac90b]"
             >
@@ -122,11 +122,11 @@ export default function DefaultNavbar() {
         <div
           className={`md:hidden bg-white border-t shadow-md px-4 py-3 space-y-2 ${navFont.className}`}
         >
-          {["Home", "Shop", "Contact"].map((label) => (
+          {["Home", "Shop", "Contact","Track Your Order"].map((label) => (
             <Link
               key={label}
               href={`/${
-                label.toLowerCase() === "home" ? "" : label.toLowerCase()
+                label.toLowerCase() === "home" ? "" : label.replace(/\s+/g, "").toLowerCase() === "trackyourorder"?"trackyourorder": label.toLowerCase()
               }`}
               className="block py-2 hover:text-[#eac90b]"
               onClick={() => setIsOpen(false)}
