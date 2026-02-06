@@ -5,17 +5,17 @@ const CategoryShowcase = () => {
   const categories = [
     {
       id: 1,
-      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770033386/90f874be-915e-4c34-913c-afa2e1f9655d.png",
+      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770396837/e4353cb0-f908-4efe-a21d-9f29b9f93d2c.png",
       href: "/shop",
     },
     {
       id: 2,
-      image: "/images/categories/gramflour.jpg",
+      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770396960/dee4ed19-a2dd-4915-9f0d-6e765769c7b2.png",
       href: "/shop",
     },
     {
       id: 3,
-      image: "/images/categories/hing.jpg",
+      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770396999/949e4502-8821-4832-8d66-22babd083505.png",
       href: "/shop",
     },
     {

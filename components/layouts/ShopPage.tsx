@@ -15,6 +15,7 @@ type FilterState = {
   Laridae: boolean;
   GramFlour: boolean;
   FlowerBasedTea: boolean;
+  LaridaeCoffee: boolean;
   [key: string]: boolean;
 };
 
@@ -27,7 +28,10 @@ const ShopPage = ({ shopFlag }: Props) => {
     Laridae: false,
     GramFlour: false,
     FlowerBasedTea: false,
+    LaridaeCoffee: false,
   });
+
+  console.log(products)
 
   useEffect(() => {
     if (!products?.data) return;
@@ -83,6 +87,7 @@ const ShopPage = ({ shopFlag }: Props) => {
     { name: "Laridae", id: 2 },
     { name: "Gram Flour", id: 3 },
     { name: "Flower Based Tea", id: 4 },
+    { name: "LaridaeCoffee", id: 5 },
   ];
 
   const handleFilterChange = (name: keyof FilterState) => {
@@ -229,6 +234,8 @@ const ShopPage = ({ shopFlag }: Props) => {
                                 ? "Laridae Tea"
                                 : item.name === "GramFlour"
                                 ? "Gram Flour"
+                                : item.name === "LaridaeCoffee"
+                                ? "Laridae Coffee"
                                 : item.name}
                             </h3>
                           </div>
@@ -313,6 +320,7 @@ const ShopPage = ({ shopFlag }: Props) => {
                           Laridae: false,
                           GramFlour: false,
                           FlowerBasedTea: false,
+                          LaridaeCoffee: false,
                         })
                       }
                       className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-[#C5A572] to-amber-500 text-white font-medium hover:from-amber-600 hover:to-orange-500 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
