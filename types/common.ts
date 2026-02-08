@@ -16,7 +16,7 @@ export type shopFlag={
 }
 
 export interface loginFormData {
-  email: string;
+  phone: string;
   password: string;
   confirmPassword?: string;
   name?: string;

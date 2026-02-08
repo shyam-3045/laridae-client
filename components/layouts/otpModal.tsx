@@ -33,7 +33,7 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
   const { mutate: sendOtp } = sendOtpReq();
   const [err,setErr]=useState<string>()
   
-  console.log(products )
+  
 
   const {
     mutate: verifyOtp,
@@ -131,8 +131,8 @@ const handleVerify = () => {
 
   try {
     const user = JSON.parse(localStorage.getItem("user-storage") as string);
-    const email = user.state.data.user;
-    verifyOtp({ email, otp: otpString }); // no need to check isSuccess here
+    const phone = user.state.data.user;
+    verifyOtp({ phone, otp: otpString }); 
   } catch (error) {
     console.error("OTP verification failed:", error);
   }
@@ -141,7 +141,7 @@ const handleVerify = () => {
   const startPayment=async()=>
   {
     const user = JSON.parse(localStorage.getItem("user-storage") as string);
-    const email = user.state.data.user;  
+    const phone = user.state.data.user;  
     const order= await api.post("create-order",{
       amount:totalAmount
     })
@@ -168,7 +168,7 @@ const handleVerify = () => {
           useCartStore.getState().clearCart()
 
           creatOrder({
-            email:email,
+            phone:phone,
             products:products,
             deliveryDetails:delivarydetails,
             totalAmount:totalAmount,
@@ -203,8 +203,8 @@ const handleVerify = () => {
 
     try {
       const user = JSON.parse(localStorage.getItem("user-storage") as string);
-      const email = user.state.data.user;
-      sendOtp({ email });
+      const phone = user.state.data.user;
+      sendOtp({ phone });
       console.log("OTP resent");
       setTimer(60);
       setCanResend(false);

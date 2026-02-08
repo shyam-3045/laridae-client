@@ -16,6 +16,8 @@ import { toastSuccess } from "@/utils/toast";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { useRouter } from 'next/navigation';
+
 
 const navFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,11 +26,13 @@ const navFont = Plus_Jakarta_Sans({
 
 export default function DefaultNavbar() {
   const { logout } = useUser();
+   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const { openCart, cart } = useCartStore();
 
   const handleLogout = () => {
+    router.push("/")
     logout();
     toastSuccess("Successfully Logged Out ");
   };
@@ -100,8 +104,8 @@ export default function DefaultNavbar() {
               <DropdownMenuItem>
                 <Link href="/orders">View Orders</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <button onClick={handleLogout}>Logout</button>
+              <DropdownMenuItem onClick={handleLogout}>
+                  Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

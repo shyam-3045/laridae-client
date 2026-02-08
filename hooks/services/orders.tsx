@@ -4,9 +4,9 @@ import { orderSchema } from "@/types/orders"
 export const getOrders=async()=>
 {
     const user = JSON.parse(localStorage.getItem("user-storage") as string);
-    const email=user.state.data.user
+    const phone=user.state.data.user
     const res = await api.post("/myOrder",{
-        email:email
+        phone:phone
     })
     return res.data
 }

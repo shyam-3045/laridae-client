@@ -137,12 +137,12 @@ const PaymentPage: React.FC = () => {
 
   const onSubmit = async (data: DeliveryFormData) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user-storage") as string);
-      const email = user.state.data.user;
+      //  const user = JSON.parse(localStorage.getItem("user-storage") as string);
+      const phone = data.mobile;
       setDeliveryDetails(data);
       addUser({ data });
       reset();
-      sendOtp({ email });
+      sendOtp({ phone });
       if (otpisError) console.log(otpError);
       setOtpModal(true);
     } catch (error) {
@@ -194,7 +194,6 @@ const PaymentPage: React.FC = () => {
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[calc(100vh-200px)]">
-            {/* Order Summary */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 overflow-y-auto max-h-[calc(100vh-120px)]">
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
@@ -286,7 +285,6 @@ const PaymentPage: React.FC = () => {
               )}
             </div>
 
-            {/* Delivery Form */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-1">
@@ -297,7 +295,7 @@ const PaymentPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="space-y-5">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <div>
                   <label
                     htmlFor="address"
@@ -514,7 +512,7 @@ const PaymentPage: React.FC = () => {
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={isSubmitting || isPending}
+                    disabled={isSubmitting || isPending ||!deliveryMode}
                     className="w-full px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-sm"
                   >
                     {isSubmitting ? (
@@ -527,7 +525,7 @@ const PaymentPage: React.FC = () => {
                     )}
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

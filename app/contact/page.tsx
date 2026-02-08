@@ -26,24 +26,43 @@ const ContactPage: React.FC = () => {
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus("submitting");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setFormStatus("submitting");
 
-    // Simulate form submission
-    setTimeout(() => {
-      setFormStatus("success");
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-      });
+  try {
+    const form = e.currentTarget;
+    const data = new FormData(form);
 
-      setTimeout(() => setFormStatus("idle"), 5000);
-    }, 1500);
-  };
+    data.append("_captcha", "false");
+    data.append("_subject", "New contact from Laridae website");
+
+    await fetch(
+      "https://formsubmit.co/ajax/s.m.shyam45@gmail.com",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    setFormStatus("success");
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    });
+
+    form.reset();
+
+    setTimeout(() => setFormStatus("idle"), 5000);
+
+  } catch {
+    setFormStatus("error");
+  }
+};
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -155,7 +174,20 @@ const ContactPage: React.FC = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form
+              onSubmit={handleSubmit} className="space-y-6"
+            >
+              <input type="hidden" name="_captcha" value="false" />
+              <input
+                type="hidden"
+                name="_subject"
+                value="New contact from Laridae website"
+              />
+              <input
+                type="hidden"
+                name="_next"
+                value="https://your-domain.com/thank-you"
+              />
               {/* Name Input */}
               <div>
                 <label

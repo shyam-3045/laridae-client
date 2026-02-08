@@ -11,7 +11,7 @@ interface orderProducts{
     quantity:number
 }
 export interface orderSchema{
-    email:string,
+    phone:string,
     products:orderProducts[],
     deliveryDetails?:DeliveryFormData,
     totalAmount:number,

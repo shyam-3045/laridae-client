@@ -4,16 +4,16 @@ import { sendOtp, verifyOtp } from "../services/otp";
 export const sendOtpReq=()=>
 {
     return useMutation({
-        mutationFn:(payload:{email:string})=>
-            sendOtp(payload.email)
+        mutationFn:(payload:{phone:string})=>
+            sendOtp(payload.phone)
     })
 }
 
-export const useVerifyOtpReq=( options? : UseMutationOptions<any,unknown,{email:string,otp:string}>)=>
+export const useVerifyOtpReq=( options? : UseMutationOptions<any,unknown,{phone:string,otp:string}>)=>
 {
     return useMutation({
-        mutationFn:(payload:{email:string,otp:string})=>
-            verifyOtp(payload.email,payload.otp),
+        mutationFn:(payload:{phone:string,otp:string})=>
+            verifyOtp(payload.phone,payload.otp),
         ...options
     })
 }

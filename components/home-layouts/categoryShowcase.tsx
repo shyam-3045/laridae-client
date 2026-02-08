@@ -20,7 +20,7 @@ const CategoryShowcase = () => {
     },
     {
       id: 4,
-      image: "/images/categories/hing.jpg",
+      image: "https://res.cloudinary.com/dcyjehnyf/image/upload/v1770524987/deleteyut_pdcyja.png",
       href: "/shop",
     },
   ];

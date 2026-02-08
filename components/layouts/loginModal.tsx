@@ -1,18 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { X, Eye, EyeOff, Mail, Lock, User, Route } from "lucide-react";
+import { X, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCartStore } from '@/store/cartStore';
+
 import {
-  LoginFormType,
   loginSchema,
-  signUpFormType,
   signUpSchema,
 } from "@/types/authSchema";
 import { useUser } from "@/store/userStore";
 import { useRouter } from "next/navigation";
 import { loginOrSignUp } from "@/hooks/CustomHooks/auth";
-import {  loginFormData } from "@/types/common";
+import { loginFormData } from "@/types/common";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -23,52 +23,73 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = ({
   isOpen,
   onClose,
-  
 }) => {
-  const { mutateAsync, isPending, isError, error, data:loginData } = loginOrSignUp();
-  
-  const [serverError,setServerError]=useState<string>('')
+
+  const { mutateAsync, isPending, isError, error } = loginOrSignUp();
+  const { closeCart } = useCartStore();
+
+  const [serverError, setServerError] = useState<string>("");
+  const [serverSuccess, setServerSuccess] = useState<string>("");   // ✅ added
+
   const [isLogin, setIsLogin] = useState(true);
-  const {login}=useUser()
+  const { login } = useUser();
   const router = useRouter();
-  
-  const { register, handleSubmit: onHandleSubmit, formState: { isSubmitting, errors }, } = useForm<loginFormData>({ resolver: zodResolver(isLogin ? loginSchema : signUpSchema), });
 
+  const {
+    register,
+    handleSubmit: onHandleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<loginFormData>({
+    resolver: zodResolver(isLogin ? loginSchema : signUpSchema),
+  });
 
-  useEffect(()=>
-  {
-    if(isError)
-    {
-     const msg = (error as any)?.response?.data?.message || "Something went wrong";
-    setServerError(msg)
-    setTimeout(()=>
-    {
-      setServerError("")
-    },3000)
+  useEffect(() => {
+    if (isError) {
+      const msg =
+        (error as any)?.response?.data?.message || "Something went wrong";
+      setServerError(msg);
+      setServerSuccess("");   // ✅ clear success when error happens
 
+      setTimeout(() => {
+        setServerError("");
+      }, 3000);
     }
-   
+  }, [isError, error]);
 
-  },[isError,error])
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = async (data : loginFormData  ) => {
+  const handleSubmit = async (data: loginFormData) => {
+
     const type = isLogin ? "Login" : "signup";
-    await mutateAsync({ data, typeOfAuth: type });
-    if (isError) {
-      console.log(error.message);
-    }
-    else{
-      console.log(loginData)
-      login({user:data.email})
-      onClose()
-      router.push('/payment')
+
+    try {
+      const res = await mutateAsync({ data, typeOfAuth: type });
+
+      // ✅ show success only when backend really succeeds
+      const msg = res?.data?.message;
+      if (msg) {
+        setServerSuccess(msg);
+        setIsLogin(true)
+        setServerError("");
+      }
+
+      if (isLogin) {
+        login({ user: data.phone });
+        onClose();
+        closeCart();
+        router.push("/payment");
+      }
+
+    } catch (e) {
+      // error UI handled by useEffect
     }
   };
 
   const toggleMode = () => {
     setIsLogin((prev) => !prev);
+    setServerError("");
+    setServerSuccess("");
   };
 
   if (!isOpen) return null;
@@ -102,15 +123,25 @@ const LoginModal: React.FC<LoginModalProps> = ({
         </div>
 
         <div className="p-6">
-          
+
           <form onSubmit={onHandleSubmit(handleSubmit)} className="space-y-4">
+
             {serverError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-6">
-              <p className="text-sm text-red-600 text-center">
-                {serverError || "Invalid OTP. Please try again."}
-              </p>
-            </div>
-          )}
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-6">
+                <p className="text-sm text-red-600 text-center">
+                  {serverError}
+                </p>
+              </div>
+            )}
+
+            {serverSuccess && (
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg mb-6">
+                <p className="text-sm text-green-700 text-center">
+                  {serverSuccess}
+                </p>
+              </div>
+            )}
+
             {!isLogin && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -138,15 +169,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 )}
               </div>
             )}
-            {loginData?.data && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {loginData?.data}
-                  </p>
-                )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                Phone Number
               </label>
               <div className="relative">
                 <Mail
@@ -154,18 +180,18 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   size={20}
                 />
                 <input
-                  {...register("email")}
-                  type="email"
-                  name="email"
+                  {...register("phone")}
+                  type="phone"
+                  name="phone"
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                    errors.email ? "border-red-500" : "border-gray-300"
+                    errors.phone ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="Enter your email"
+                  placeholder="Enter your Phone"
                 />
               </div>
-              {errors.email && (
+              {errors.phone && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.email.message}
+                  {errors.phone.message}
                 </p>
               )}
             </div>
@@ -271,6 +297,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
               </button>
             </p>
           </div>
+
         </div>
       </div>
     </div>

@@ -5,6 +5,10 @@ import { useCartStore } from '@/store/cartStore';
 import { useAllProducts } from '@/hooks/CustomHooks/useAllProducts';
 import { toastSuccess } from '@/utils/toast';
 import { useRouter } from 'next/navigation';
+import LoginModal from "./loginModal";
+import { useUser } from "@/store/userStore";
+import { useEffect, useState } from 'react';
+
 
 export default function CartDrawer() {
   const {
@@ -14,10 +18,13 @@ export default function CartDrawer() {
     decreaseQuantity,
     addToCart,
     clearProduct,
+    setCartTotal
   } = useCartStore();
 
   const { data: allProducts } = useAllProducts();
   const router = useRouter();
+  const { isLogged } = useUser()
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   const cartProducts = cart
     .map((item: any) => {
@@ -37,7 +44,7 @@ export default function CartDrawer() {
   if (!cartOpen) return null;
   if (!allProducts?.data) return null;
   if (cartProducts.length === 0) return null;
-
+  
   const subtotal = cartProducts.reduce((sum: number, item: any) => {
     const price = item.product?.variants?.[0]?.discountedPrice;
 
@@ -45,27 +52,43 @@ export default function CartDrawer() {
 
     return sum + price * item.quantity;
   }, 0);
+  
+
 
   const total = subtotal;
+  console.log(total)
+
+  const onClose = () => {
+    setCartTotal(total)
+    setOpenModal(false)
+  }
 
   const handleSubmit = () => {
-    closeCart();
-    router.push('/payment');
+    setCartTotal(total)
+    if (!isLogged) {
+      setOpenModal(prev => !prev)
+    } else {
+      closeCart()
+      router.push("/payment")
+    }
   };
+
 
   return (
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 z-40 ${
-          cartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ${
+          cartOpen ? 'z-40 opacity-100' : 'z-40 opacity-0 pointer-events-none'
         }`}
         onClick={closeCart}
       />
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-[420px] max-w-[90vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-[420px] max-w-[90vw] bg-white shadow-2xl ${
+          openModal ? 'z-40' : 'z-50'
+        } transform transition-transform duration-300 ease-out ${
           cartOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -169,6 +192,9 @@ export default function CartDrawer() {
           </button>
         </div>
       </div>
+
+      
+      {openModal && <LoginModal isOpen={openModal} onClose={onClose} isLogged={isLogged} />}
     </>
   );
 }

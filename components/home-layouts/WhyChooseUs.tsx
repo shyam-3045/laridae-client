@@ -1,27 +1,27 @@
-import { Shield, Truck, Headphones, Award } from 'lucide-react';
+import { Store, HeadphonesIcon, BadgeCheck, Package } from 'lucide-react';
 import AnimatedOnScroll from '@/components/common/AddScrollAnimations';
 
 const WhyChooseUs = () => {
   const features = [
     {
-      icon: Shield,
-      title: "Premium Quality",
-      description: "Carefully curated products with guaranteed authenticity and superior quality standards."
+      icon: Store,
+      title: "Understanding Tea Shop & Bakery",
+      description: "Deep expertise in tea and bakery products with personalized recommendations tailored to your preferences."
     },
     {
-      icon: Truck,
-      title: "Fast Delivery",
-      description: "Quick and reliable shipping with real-time tracking across all major cities."
+      icon: HeadphonesIcon,
+      title: "Consistent Support & Assistance",
+      description: "Dedicated customer service team ready to help you with any questions or concerns at every step."
     },
     {
-      icon: Headphones,
-      title: "24/7 Support",
-      description: "Round-the-clock customer service to assist you with any queries or concerns."
+      icon: BadgeCheck,
+      title: "Best Product Quality & Best Pricing",
+      description: "Premium quality products sourced from trusted suppliers at competitive prices you can trust."
     },
     {
-      icon: Award,
-      title: "Best Prices",
-      description: "Competitive pricing with regular offers and exclusive deals for our customers."
+      icon: Package,
+      title: "Fast & Secure Delivery",
+      description: "Reliable shipping with careful handling to ensure your items arrive fresh and in perfect condition."
     }
   ];
 
@@ -42,15 +42,15 @@ const WhyChooseUs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <AnimatedOnScroll key={index}>
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#eac90b] text-[#E40000] rounded-full mb-4">
-                  <feature.icon size={32} />
+              <div className="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#eac90b] text-[#E40000] rounded-full mb-4 mx-auto">
+                  <feature.icon size={32} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description} 
+                <p className="text-gray-600 text-sm leading-relaxed flex-grow">
+                  {feature.description}
                 </p>
               </div>
             </AnimatedOnScroll>

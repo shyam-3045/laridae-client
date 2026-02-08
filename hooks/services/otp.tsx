@@ -1,15 +1,15 @@
 import api from "@/lib/config/axios";
 
-export const sendOtp = async (email:string) => {
+export const sendOtp = async (phone:string) => {
   const res = await api.post("/send-otp", {
-    email,
+    phone,
   });
   return res.data
 };
 
-export const verifyOtp=async(email:string,otp:string)=>{
+export const verifyOtp=async(phone:string,otp:string)=>{
     const res= await api.post("/verify-otp",{
-        email,
+        phone,
         otp
     })
     return res.data
