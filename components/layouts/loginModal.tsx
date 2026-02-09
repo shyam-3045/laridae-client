@@ -101,20 +101,20 @@ const LoginModal: React.FC<LoginModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-        <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden border border-gray-200">
+        <div className="relative bg-gradient-to-br from-yellow-50 via-amber-50 to-white border-b border-gray-200 px-6 py-8">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors"
           >
             <X size={24} />
           </button>
 
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-normal text-gray-800 mb-2">
               {isLogin ? "Welcome back!" : "Create account"}
             </h2>
-            <p className="text-white/90 text-sm">
+            <p className="text-gray-600 text-sm">
               {isLogin
                 ? "Please sign in to your account"
                 : "Join us and get started"}
@@ -156,7 +156,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     {...register("name")}
                     type="text"
                     name="name"
-                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
                       errors?.name ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter your full name"
@@ -183,7 +183,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   {...register("phone")}
                   type="phone"
                   name="phone"
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
                     errors.phone ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter your Phone"
@@ -209,7 +209,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter your password"
@@ -243,7 +243,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     {...register("confirmPassword")}
                     type={showConfirmPassword ? "text" : "password"}
                     name="confirmPassword"
-                    className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                    className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
                       errors.confirmPassword
                         ? "border-red-500"
                         : "border-gray-300"
@@ -273,7 +273,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting || isPending}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLogin ? "Sign In" : "Create Account"}
             </button>
@@ -291,7 +291,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
               <button
                 type="button"
                 onClick={toggleMode}
-                className="ml-1 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                className="ml-1 text-yellow-600 hover:text-yellow-700 font-medium transition-colors"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>

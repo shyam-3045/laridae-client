@@ -72,11 +72,14 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
+  const [expiryTimer, setExpiryTimer] = useState(300); // 5 minutes = 300 seconds
   const [canResend, setCanResend] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   const router = useRouter();
 
+  // Resend timer (60 seconds)
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -89,6 +92,22 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
       setCanResend(true);
     }
   }, [timer]);
+
+  // OTP expiry timer (5 minutes)
+  useEffect(() => {
+    if (expiryTimer > 0 && !isExpired) {
+      const interval = setInterval(() => {
+        setExpiryTimer((prev) => {
+          if (prev <= 1) {
+            setIsExpired(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [expiryTimer, isExpired]);
 
   useEffect(() => {
     if (isOpen && inputRefs.current[0]) {
@@ -125,6 +144,12 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
     }
   };
 const handleVerify = () => {
+  if (isExpired) {
+    setErr("OTP has expired. Please request a new one.");
+    setTimeout(() => setErr(""), 3000);
+    return;
+  }
+
   const otpString = otp.join("");
 
   if (otpString.length !== 6) return;
@@ -207,12 +232,21 @@ const handleVerify = () => {
       sendOtp({ phone });
       console.log("OTP resent");
       setTimer(60);
+      setExpiryTimer(300); // Reset expiry timer to 5 minutes
       setCanResend(false);
+      setIsExpired(false);
       setOtp(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
     } catch (error) {
       console.error("Failed to resend OTP:", error);
     }
+  };
+
+  // Format expiry timer as MM:SS
+  const formatExpiryTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   if (!isOpen) return null;
@@ -224,24 +258,22 @@ const handleVerify = () => {
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-        <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden border border-gray-200">
+        <div className="relative bg-gradient-to-br from-yellow-50 via-amber-50 to-white border-b border-gray-200 px-6 py-8">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors"
           >
             <X size={24} />
           </button>
 
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4">
-              <Shield className="text-white" size={32} />
+            <div className="mx-auto w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+              <Shield className="text-yellow-600" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Verify OTP</h2>
-            <p className="text-white/90 text-sm">
-              We've sent a 6-digit code to{" "}
-              {/* {email && <span className="font-medium">{email}</span>}
-              {phoneNumber && <span className="font-medium">{phoneNumber}</span>} */}
+            <h2 className="text-2xl font-normal text-gray-800 mb-2">Verify OTP</h2>
+            <p className="text-gray-600 text-sm">
+              We've sent a 6-digit code to your registered number
             </p>
           </div>
         </div>
@@ -252,6 +284,14 @@ const handleVerify = () => {
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-6">
               <p className="text-sm text-red-600 text-center">
                 {err || "Invalid OTP. Please try again."}
+              </p>
+            </div>
+          )}
+
+          {isExpired && (
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg mb-6">
+              <p className="text-sm text-amber-700 text-center font-medium">
+                OTP has expired. Please request a new one.
               </p>
             </div>
           )}
@@ -276,9 +316,17 @@ const handleVerify = () => {
                     }
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     onPaste={index === 0 ? handlePaste : undefined}
-                    className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    disabled={isExpired}
+                    className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 ))}
+              </div>
+
+              {/* OTP Expiry Timer */}
+              <div className="mt-4 text-center">
+                <p className={`text-sm font-medium ${isExpired ? 'text-red-600' : expiryTimer <= 60 ? 'text-amber-600' : 'text-gray-600'}`}>
+                  {isExpired ? 'OTP Expired' : `OTP expires in ${formatExpiryTime(expiryTimer)}`}
+                </p>
               </div>
             </div>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
@@ -286,8 +334,8 @@ const handleVerify = () => {
             <button
               type="button"
               onClick={handleVerify}
-              disabled={otp.join("").length !== 6} // || isVerifying
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={otp.join("").length !== 6 || isExpired}
+              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
              
               Verify OTP
@@ -303,11 +351,9 @@ const handleVerify = () => {
               <button
                 type="button"
                 onClick={handleResend}
-                // disabled={isResending}
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                className="inline-flex items-center text-yellow-600 hover:text-yellow-700 font-medium transition-colors"
               >
                 <RotateCcw size={16} className="mr-1" />
-                {/* {isResending ? "Sending..." : "Resend OTP"} */}
                 Resend OTP
               </button>
             ) : (
@@ -317,7 +363,7 @@ const handleVerify = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
-              Check your spam folder if you don't see the code
+              Check your messages if you don't see the code
             </p>
           </div>
         </div>

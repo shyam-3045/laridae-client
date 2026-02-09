@@ -139,6 +139,7 @@ const PaymentPage: React.FC = () => {
     try {
       //  const user = JSON.parse(localStorage.getItem("user-storage") as string);
       const phone = data.mobile;
+      console.log(data)
       setDeliveryDetails(data);
       addUser({ data });
       reset();

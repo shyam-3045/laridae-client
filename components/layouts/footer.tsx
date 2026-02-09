@@ -1,6 +1,6 @@
 // components/layouts/Footer.jsx
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -11,7 +11,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div>
-              <h3 className="text-xl font-bold mb-4">Your Store</h3>
+              <h3 className="text-xl font-bold mb-4">Laridae</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
                 Your trusted partner for quality products and exceptional service. 
                 We're committed to delivering the best shopping experience.
@@ -24,11 +24,6 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
-                  About Us
-                </Link>
-              </li>
-              <li>
                 <Link href="/shop" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
                   Shop
                 </Link>
@@ -39,8 +34,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
-                  Blog
+                <Link href="/orders" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                  Your Orders
                 </Link>
               </li>
             </ul>
@@ -51,23 +46,18 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/help" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link href="/returns" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                <Link href="/" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
                   Returns & Exchanges
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                <Link href="/trackyourorder" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
                   Shipping Info
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
-                  FAQ
                 </Link>
               </li>
             </ul>
@@ -79,21 +69,21 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-gray-300" />
-                <a href="mailto:info@yourstore.com" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
-                  info@yourstore.com
+                <a href="mailto:sales@atiexports.com" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                  sales@atiexports.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-gray-300" />
-                <a href="tel:+1234567890" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
-                  +1 (234) 567-8900
+                <a href="tel:+91 90254 87084" className="text-gray-300 hover:text-white transition-colors duration-200 text-sm">
+                  +91 90254 87084
                 </a>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin size={16} className="text-gray-300 mt-0.5" />
                 <span className="text-gray-300 text-sm">
-                  123 Business Street<br />
-                  City, State 12345
+                  149, Poondurai Main Road,<br />
+                  Mullamparappu, Erode - 638115
                 </span>
               </div>
             </div>
@@ -102,17 +92,17 @@ const Footer = () => {
             <div className="mt-6">
               <h5 className="text-sm font-semibold mb-3">Follow Us</h5>
               <div className="flex space-x-3">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <a href="https://www.facebook.com/laridaeteapremium" className="text-gray-300 hover:text-white transition-colors duration-200">
                   <Facebook size={18} />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  <Twitter size={18} />
+                <a href="https://www.youtube.com/@laridaeteapremium" className="text-gray-300 hover:text-white transition-colors duration-200">
+                  <Youtube size={18} />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <a href="https://www.instagram.com/laridaeteapremium?igsh=MWp2cThy7WdpeHFhbw==" className="text-gray-300 hover:text-white transition-colors duration-200">
                   <Instagram size={18} />
                 </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  <Linkedin size={18} />
+                <a href="https://wa.me/919025487084" className="text-gray-300 hover:text-white transition-colors duration-200">
+                  <MessageCircle size={18} />
                 </a>
               </div>
             </div>

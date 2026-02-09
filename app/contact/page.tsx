@@ -38,7 +38,7 @@ const ContactPage: React.FC = () => {
     data.append("_subject", "New contact from Laridae website");
 
     await fetch(
-      "https://formsubmit.co/ajax/s.m.shyam45@gmail.com",
+      "https://formsubmit.co/ajax/sales@atiexports.com",
       {
         method: "POST",
         body: data,

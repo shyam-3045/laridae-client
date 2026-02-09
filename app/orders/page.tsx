@@ -100,6 +100,7 @@ const OrdersPage: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const { data: ordersData, isLoading, isSuccess } = getMyOrders();
+  console.log(ordersData)
 
   const orders: Order[] = useMemo(() => {
     const raw = (ordersData as any)?.data ?? ordersData ?? [];
