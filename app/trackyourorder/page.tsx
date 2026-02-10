@@ -57,16 +57,15 @@ const firstDiscounted = (variants: any[]): number => {
 
 const getTrackingLink = (deliveryMode: string, orderNumber: string): string => {
   if (deliveryMode === "courier") {
-    // Example: Using Delhivery tracking (replace with your actual courier service)
-    return `https://www.delhivery.com/track/package/${orderNumber}`;
+    return `https://stcourier.com/track/shipment`;
   } else {
     // Example: Using India Post tracking for parcel
-    return `https://www.indiapost.gov.in/_layouts/15/dop.portal.tracking/trackconsignment.aspx`;
+    return `https://www.metturtransports.com`;
   }
 };
 
 const mapApiOrdersToTracking = (apiOrders: any[]): TrackingOrder[] => {
-  if (!Array.isArray(apiOrders)) return [];
+  if (!Array.isArray(apiOrders)) return []
   
   return apiOrders
     .filter((o) => {
