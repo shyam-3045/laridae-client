@@ -5,26 +5,50 @@ const TestimonialsSection = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "Verified Customer",
+      name: "Dhanarajan ",
+      role: "Tea Shop Owner",
       rating: 5,
-      comment: "Amazing quality products and super fast delivery! The customer service team was incredibly helpful when I had questions about my order.",
+      comment: "Tea shop-la main-ey tea strong-ah irukanum. Inga vaanguna tea powder perfect color and taste tharudhu. Customers ellam 'tea nalla iruku' nu solrangah. Delivery-um correct time-ku vandhurudhu. Super service!",
       avatar: "SJ"
     },
     {
       id: 2,
-      name: "Michael Chen",
-      role: "Regular Customer",
+      name: "Preedeep Kumar",
+      role: "Bakery Owner",
       rating: 5,
-      comment: "I've been shopping here for over a year now. The variety of products and competitive prices keep me coming back. Highly recommended!",
+      comment: "I tried many brands for my bakery, but indha brand tea leaf nalla extract tharudhu. Milk kammiya use pannalum tea nalla thikk-ah iruku. Margin-um business-ku romba set aagudhu. Highly recommended for bulk orders!",
       avatar: "MC"
     },
     {
       id: 3,
-      name: "Emily Rodriguez",
-      role: "Happy Customer",
+      name: "Muhammad  ",
+      role: "Reseller/Distributor",
       rating: 5,
-      comment: "The best online shopping experience I've had. Products arrived exactly as described and the packaging was excellent. Will definitely shop again!",
+      comment: "As a reseller in the Tamil Nadu circuit, I look for brand reliability. The packaging is premium and the shelf life is great. My retailers are specifically asking for this brand because of the 'Hotel-style' taste it provides. Very happy with the partnership.",
+      avatar: "ER"
+    },
+    {
+      id: 4,
+      name: "Kalaivanan ",
+      role: "College Canteen",
+      rating: 5,
+      comment: "We cater to hundreds of students daily, and consistency is our biggest challenge. This tea brand has been a lifesaver. The aroma is fantastic and the price point is very competitive for institutional buyers. Excellent support from the team.",
+      avatar: "ER"
+    },
+    {
+      id: 5,
+      name: "Jebakumar",
+      role: "Hospital Canteen",
+      rating: 5,
+      comment: "எங்கள் மருத்துவமனை கேண்டீனுக்கு கடந்த ஆறு மாதங்களாக இவர்களிடம் தான் டீ தூள் வாங்குகிறோம். தரம் எப்போதும் ஒரே சீராக இருக்கிறது. குறிப்பாக, டீ போட்ட பிறகு நீண்ட நேரம் அந்த சுவையும் மணமும் மாறாமல் இருப்பது பெரிய பிளஸ். சரியான விலையில் தரமான தயாரிப்பு!",
+      avatar: "ER"
+    },
+     {
+      id: 6,
+      name: "RamKumar ",
+      role: "Catering Service",
+      rating: 5,
+      comment: "அந்த நிறமும்  மணமும் பிரமாதமாக இருக்கிறது. மொத்தமாக வாங்கும் போது விலை மிகவும் கட்டுப்படியாகிறது.",
       avatar: "ER"
     }
   ];

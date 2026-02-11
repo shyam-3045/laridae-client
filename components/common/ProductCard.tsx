@@ -26,17 +26,17 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
     // Full stars
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <Star key={`full-${i}`} className="w-4 h-4 text-amber-400 fill-current" />
+        <Star key={`full-${i}`} className="w-3 h-3 md:w-4 md:h-4 text-amber-400 fill-current" />
       );
     }
 
     // Half star
     if (hasHalfStar) {
       stars.push(
-        <div key="half" className="relative w-4 h-4">
-          <Star className="w-4 h-4 text-gray-300 fill-current absolute" />
+        <div key="half" className="relative w-3 h-3 md:w-4 md:h-4">
+          <Star className="w-3 h-3 md:w-4 md:h-4 text-gray-300 fill-current absolute" />
           <div className="overflow-hidden w-1/2 absolute">
-            <Star className="w-4 h-4 text-amber-400 fill-current" />
+            <Star className="w-3 h-3 md:w-4 md:h-4 text-amber-400 fill-current" />
           </div>
         </div>
       );
@@ -45,7 +45,7 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
     // Empty stars
     for (let i = 0; i < emptyStars; i++) {
       stars.push(
-        <Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
+        <Star key={`empty-${i}`} className="w-3 h-3 md:w-4 md:h-4 text-gray-300" />
       );
     }
 
@@ -92,10 +92,10 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
         }`}
       >
         {/* Image Section */}
-        <div className="relative p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="relative p-2 md:p-4 bg-gradient-to-br from-gray-50 to-gray-100">
           {/* Discount Badge */}
           {discountPercentage > 0 && product.isAvailable && (
-            <div className="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full z-10 shadow-lg">
+            <div className="absolute top-1 left-1 md:top-2 md:left-2 bg-gradient-to-r from-red-600 to-red-500 text-white text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-full z-10 shadow-lg">
               -{discountPercentage}% OFF
             </div>
           )}
@@ -121,14 +121,14 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
         </div>
 
         {/* Content Section */}
-        <div className="p-4 flex-1 flex flex-col">
+        <div className="p-2 md:p-4 flex-1 flex flex-col">
           {/* Rating Section - Only show if product is available */}
           {product.isAvailable && (
-            <div className="flex items-center gap-1 mb-3">
+            <div className="flex items-center gap-1 mb-2 md:mb-3">
               <div className="flex items-center">
                 {renderStars(product.ratings)}
               </div>
-              <span className="ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+              <span className="ml-1 md:ml-2 text-[10px] md:text-xs font-medium text-gray-600 bg-gray-100 px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full">
                 {product.ratings.toFixed(1)} ({product.numOfReviews}{" "}
                 {product.numOfReviews === 1 ? "review" : "reviews"})
               </span>
@@ -136,13 +136,13 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
           )}
 
           {/* Product Name */}
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5 group-hover:text-red-600 transition-colors min-h-[2.5rem]">
+          <h3 className="font-semibold text-gray-900 mb-1 md:mb-2 line-clamp-2 text-xs md:text-sm leading-4 md:leading-5 group-hover:text-red-600 transition-colors min-h-[2rem] md:min-h-[2.5rem]">
             {product.name}
           </h3>
 
           {/* Category */}
-          <div className="mb-3">
-            <span className="inline-block bg-gradient-to-r from-red-50 to-orange-50 text-red-700 text-xs font-semibold px-3 py-1 rounded-full border border-red-100">
+          <div className="mb-2 md:mb-3">
+            <span className="inline-block bg-gradient-to-r from-red-50 to-orange-50 text-red-700 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full border border-red-100">
               {product.category}
             </span>
           </div>
@@ -150,21 +150,21 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
           {/* Price Section */}
           <div className="mt-auto">
             {product.isAvailable ? (
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-xl font-bold text-gray-900">
+              <div className="flex items-baseline gap-1 md:gap-2 mb-2 md:mb-3">
+                <span className="text-base md:text-xl font-bold text-gray-900">
                   ₹{variant.discountedPrice.toLocaleString()}
                 </span>
                 {variant.price && variant.price !== variant.discountedPrice && (
-                  <span className="text-sm text-gray-500 line-through">
+                  <span className="text-xs md:text-sm text-gray-500 line-through">
                     ₹{variant.price.toLocaleString()}
                   </span>
                 )}
               </div>
             ) : (
-              <div className="mb-3">
+              <div className="mb-2 md:mb-3">
                 <div className="relative inline-block">
                   {/* Blurred price */}
-                  <span className="text-lg font-bold text-gray-400 blur-sm select-none">
+                  <span className="text-sm md:text-lg font-bold text-gray-400 blur-sm select-none">
                     ₹{variant.discountedPrice.toLocaleString()}
                   </span>
                 </div>
@@ -176,24 +176,24 @@ export function ProductCard({ product, isOtherProducts = false }: Props) {
 
       {/* Button Section */}
       {!isOtherProducts && (
-        <div className="p-4 pt-0">
+        <div className="p-2 md:p-4 pt-0">
           {product.isAvailable ? (
             <button
               onClick={() => {
                 handleAddToCart(product._id, product.shopFlag);
                 openCart();
               }}
-              className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-400 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm tracking-wide"
+              className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-400 text-white font-bold py-2 md:py-3.5 px-3 md:px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm tracking-wide"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
               ADD TO CART
             </button>
           ) : (
             <button
               disabled
-              className="w-full bg-gradient-to-r from-gray-300 to-gray-400 text-gray-600 font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-75"
+              className="w-full bg-gradient-to-r from-gray-300 to-gray-400 text-gray-600 font-bold py-2 md:py-3.5 px-3 md:px-4 rounded-xl flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm tracking-wide cursor-not-allowed opacity-75"
             >
-              <Clock className="w-5 h-5" />
+              <Clock className="w-4 h-4 md:w-5 md:h-5" />
               COMING SOON
             </button>
           )}

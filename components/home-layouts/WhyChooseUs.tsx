@@ -26,32 +26,34 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
       <div className="container mx-auto px-4">
         <AnimatedOnScroll>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
               Why Choose Us?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-gray-600 max-w-2xl mx-auto">
               We're committed to providing you with the best shopping experience through our dedication to quality, service, and customer satisfaction.
             </p>
           </div>
         </AnimatedOnScroll>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {features.map((feature, index) => (
             <AnimatedOnScroll key={index}>
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#eac90b] text-[#E40000] rounded-full mb-4 mx-auto">
-                  <feature.icon size={32} strokeWidth={2} />
+              <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-amber-100 p-3 md:p-4 rounded-full mb-3 md:mb-4">
+                    <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
+                  </div>
+                  <h3 className="text-base md:text-xl font-semibold text-gray-800 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs md:text-sm text-gray-600">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed flex-grow">
-                  {feature.description}
-                </p>
               </div>
             </AnimatedOnScroll>
           ))}
