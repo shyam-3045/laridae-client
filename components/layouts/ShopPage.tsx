@@ -185,7 +185,7 @@ const ShopPage = ({ shopFlag }: Props) => {
                   </svg>
                 </div>
                 <div className="text-left">
-                  <p className="text-sm text-gray-600 font-medium">Need to order in bulk?</p>
+                  <p className="text-sm text-white font-medium">Need to order in bulk?</p>
                   <p className="text-lg sm:text-xl font-semibold text-gray-800">
                     Contact our Sales Team
                   </p>

@@ -1,28 +1,32 @@
-import { Store, HeadphonesIcon, BadgeCheck, Package } from 'lucide-react';
-import AnimatedOnScroll from '@/components/common/AddScrollAnimations';
+import { Store, HeadphonesIcon, BadgeCheck, Package } from "lucide-react";
+import AnimatedOnScroll from "@/components/common/AddScrollAnimations";
 
 const WhyChooseUs = () => {
   const features = [
     {
       icon: Store,
       title: "Understanding Tea Shop & Bakery",
-      description: "Deep expertise in tea and bakery products with personalized recommendations tailored to your preferences."
+      description:
+        "Deep expertise in tea and bakery products with personalized recommendations tailored to your preferences.",
     },
     {
       icon: HeadphonesIcon,
       title: "Consistent Support & Assistance",
-      description: "Dedicated customer service team ready to help you with any questions or concerns at every step."
+      description:
+        "Dedicated customer service team ready to help you with any questions or concerns at every step.",
     },
     {
       icon: BadgeCheck,
       title: "Best Product Quality & Best Pricing",
-      description: "Premium quality products sourced from trusted suppliers at competitive prices you can trust."
+      description:
+        "Premium quality products sourced from trusted suppliers at competitive prices you can trust.",
     },
     {
       icon: Package,
       title: "Fast & Secure Delivery",
-      description: "Reliable shipping with careful handling to ensure your items arrive fresh and in perfect condition."
-    }
+      description:
+        "Reliable shipping with careful handling to ensure your items arrive fresh and in perfect condition.",
+    },
   ];
 
   return (
@@ -31,10 +35,15 @@ const WhyChooseUs = () => {
         <AnimatedOnScroll>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
-              Why Choose Us?
+              Why Choose{" "}
+              <span className="font-bold text-[#D4AF37]">
+                லேரிடே பிரீமியம் டீ
+              </span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We're committed to providing you with the best shopping experience through our dedication to quality, service, and customer satisfaction.
+              We're committed to providing you with the best shopping experience
+              through our dedication to quality, service, and customer
+              satisfaction.
             </p>
           </div>
         </AnimatedOnScroll>

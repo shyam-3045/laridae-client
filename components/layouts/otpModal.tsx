@@ -18,6 +18,7 @@ import { orginalCart } from "@/types/cart";
 import { toastFailure, toastSuccess } from "@/utils/toast";
 import { createOrd } from "@/hooks/CustomHooks/orders";
 import { useCartStore } from "@/store/cartStore"; 
+import { editUserDetails } from "@/hooks/CustomHooks/auth";
 
 
 type product=Pick<orginalCart , "product_id"|"quantity">
@@ -32,6 +33,7 @@ interface OTPModalProps {
 const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,totalAmount,products }) => {
   const { mutate: sendOtp } = sendOtpReq();
   const [err,setErr]=useState<string>()
+  const {mutate:editUser}=editUserDetails()
   
   
 
@@ -173,7 +175,7 @@ const handleVerify = () => {
     console.log(order)
     // 2. Open Razorpay Checkout
     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // public key
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
       amount: order?.data?.data?.amount,
       currency: order?.data?.data?.currency,
       name: "Laridae",
@@ -204,6 +206,10 @@ const handleVerify = () => {
             }
 
           })
+          const data = {
+            availFirstDiscount:false
+          }
+          editUser({data})
           console.log(orderData)
           router.push("/orders");
         } else {

@@ -1,10 +1,11 @@
 export type userDetails={
-    address:string,
-    city:string,
+    address?:string,
+    city?:string,
     landmark?:string,
-    mobile:string,
-    pincode:string,
+    mobile?:string,
+    pincode?:string,
     setAsDefault?:boolean,
-    state:string,
+    state?:string,
+    availFirstDiscount?:boolean
     
 }

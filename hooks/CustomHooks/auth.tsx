@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { addUserAddress, Login } from "../services/auth";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addUserAddress, editUserDet, getUserDet, Login } from "../services/auth";
 import { loginFormData } from "@/types/common";
 import { userDetails } from "@/types/userDetails";
 
@@ -22,5 +22,26 @@ export const addUserDetails =()=>
       console.log("success"),
     onError:(error)=>
       console.log(error)
+  })
+}
+
+export const editUserDetails=()=>
+  {
+    return useMutation({
+      mutationFn :(payload: { data: userDetails })=>
+        editUserDet(payload.data),
+      onSuccess:()=>
+      console.log("success"),
+    onError:(error)=>
+      console.log(error)
+
+        
+    })
+  }
+
+export const useUserDetails =()=>{
+  return useQuery({
+    queryKey:["user"],
+    queryFn:getUserDet
   })
 }

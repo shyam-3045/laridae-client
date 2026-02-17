@@ -1,6 +1,7 @@
 'use client';
 const messages = [
   '🚚 Free shipping on First Order Above 20kgs',
+  '🍵 India\'s first commercial Tea Brand ',
 ];
 
 export default function AnnouncementBar() {
