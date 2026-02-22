@@ -124,7 +124,7 @@ const PaymentPage: React.FC = () => {
 
   let Subtotal = baseSubtotal;
 
-  if (!!deliveryCharge && !!deliveryMode) Subtotal += deliveryCharge;
+  if (!!deliveryCharge && !!deliveryMode && deliveryMode === "courier") Subtotal += deliveryCharge;
   if (!!discount && discountApplied) Subtotal *= 0.90;
 
   const savingsAmount = discount && discountApplied
