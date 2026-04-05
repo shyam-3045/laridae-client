@@ -51,7 +51,7 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
       onClose();
   },
   onError: (error: any) => {
-    setErr(error?.response?.data?.message || "Invalid OTP");
+    setErr(error?.response?.data?.message  || "Invalid OTP");
     console.log(error)
     setTimeout(() => setErr(""), 3000);
   },
