@@ -18,8 +18,6 @@ export default function ReactQuery({children}:children){
     return (
         <QueryClientProvider client={queryClient}>
             {children}
-            
-
         </QueryClientProvider>
     )
 }

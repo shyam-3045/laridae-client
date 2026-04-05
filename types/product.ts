@@ -25,7 +25,7 @@ export interface Review {
     _id: string;
     name: string;
   };
-  rating: number; // e.g. 4.5
+  rating: number;
   comment: string;
   createdAt: string;
 }
