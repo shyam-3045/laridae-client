@@ -75,14 +75,14 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
-  const [expiryTimer, setExpiryTimer] = useState(300); // 5 minutes = 300 seconds
+  const [expiryTimer, setExpiryTimer] = useState(300); 
   const [canResend, setCanResend] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   const router = useRouter();
 
-  // Resend timer (60 seconds)
+
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -96,7 +96,7 @@ const OTPModal: React.FC<OTPModalProps> = ({delivarydetails, isOpen, onClose,tot
     }
   }, [timer]);
 
-  // OTP expiry timer (5 minutes)
+  
   useEffect(() => {
     if (expiryTimer > 0 && !isExpired) {
       const interval = setInterval(() => {
@@ -176,7 +176,7 @@ const handleVerify = () => {
       amount:totalAmount
     })
     console.log(order)
-    // 2. Open Razorpay Checkout
+  
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
       amount: order?.data?.data?.amount,
@@ -185,8 +185,7 @@ const handleVerify = () => {
       description: "Tea order",
       order_id: order?.data?.data?.id,
       handler: async function (response: any,order_id:string) {
-        // 3. Verify payment on backend
-        
+            
         const verify= await api.post("/verify-payment",{
           razorpay_order_id: response.razorpay_order_id,
                        razorpay_payment_id: response.razorpay_payment_id,
@@ -241,7 +240,7 @@ const handleVerify = () => {
       sendOtp({ phone });
       console.log("OTP resent");
       setTimer(60);
-      setExpiryTimer(300); // Reset expiry timer to 5 minutes
+      setExpiryTimer(300); 
       setCanResend(false);
       setIsExpired(false);
       setOtp(["", "", "", "", "", ""]);

@@ -1,10 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
-import {
-  Star,
-  ZoomIn,
-  X,
-} from "lucide-react";
+import { Star, ZoomIn, X } from "lucide-react";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import { ProductCard } from "../common/ProductCard";
@@ -28,48 +24,53 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
   const imageRef = useRef<HTMLDivElement>(null);
 
   if (isLoading) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
   const otherProducts = allProducts.filter(
-    (item: Product) => item._id.toString() !== products._id.toString() && item.isAvailable
+    (item: Product) =>
+      item._id.toString() !== products._id.toString() && item.isAvailable,
   );
 
-  const productSpecs = [
-    { label: "Brand", value: "VAHDAM INDIA" },
-    { label: "Product Type", value: "Herbal Tea" },
-    { label: "Flavor", value: "Hibiscus Rose" },
-    { label: "Ingredients", value: "Hibiscus, Rose, Cardamom, Fennel" },
-    { label: "Package Count", value: "15 Biodegradable Pyramid Bags" },
-    { label: "Net Weight", value: "30g" },
-    { label: "Caffeine", value: "Caffeine-Free" },
-    { label: "Origin", value: "India" },
-  ];
+ const productSpecs = [
+  { label: "Brand", value: "Laridae Tea" },
+  { label: "Category", value: products.category },
+  { label: "Net Weight", value: products.variants[0].weight },
+  { label: "Stock", value: products.variants[0].stock > 0 ? `${products.variants[0].stock} units available` : "Out of Stock" },
+  { label: "Shelf Life", value: products.shellLife },
+  { label: "Packaging", value: products.packaging },
+  { label: "Ratings", value: `${products.ratings} ⭐ (${products.numOfReviews} reviews)` },
+  { label: "Availability", value: products.isAvailable ? "In Stock" : "Out of Stock" },
+];
 
   const reviews = [
-    {
-      name: "Priya Sharma",
-      rating: 5,
-      comment:
-        "Amazing floral blend! The hibiscus and rose combination is absolutely delightful. Perfect for evening relaxation.",
-    },
-    {
-      name: "Raj Kumar",
-      rating: 5,
-      comment:
-        "Great quality tea with wonderful aroma. The packaging is eco-friendly which I really appreciate.",
-    },
-    {
-      name: "Meera Patel",
-      rating: 4,
-      comment:
-        "Very refreshing and tasty. The cardamom adds a nice touch to the floral notes.",
-    },
-  ];
+  {
+    name: "Arun Kumar",
+    rating: 5,
+    comment:
+      "சூப்பரா இருக்கு! ரொம்ப fresh-aவும் natural-aவும் இருக்கு. Daily useக்கு perfect.",
+  },
+  {
+    name: "Kavya Lakshmi",
+    rating: 5,
+    comment:
+      "Really good quality product. Packaging clean-a irukku, smell & taste also very nice.",
+  },
+  {
+    name: "Divya R",
+    rating: 5,
+    comment:
+      "மிகவும் நன்றாக இருக்கு. Pure feel கிடைக்குது, family எல்லாருக்கும் பிடிச்சிருக்கு.",
+  },
+  {
+    name: "Manikandan",
+    rating: 4,
+    comment:
+      "Worth the price. Quality consistent-a irukku, delivery also fast.",
+  },
+];
 
-  // Desktop zoom handlers
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -199,7 +200,7 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
 
             {/* Biodegradable Info */}
             <div className="text-yellow-600 font-medium text-sm lg:text-base">
-              15 Plant-Based Biodegradable Pyramid Bags
+              Plant-Based Biodegradable Pyramid Bags
             </div>
 
             {/* Price Section */}
@@ -211,15 +212,25 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
                 <span className="text-xl sm:text-2xl font-normal text-gray-800">
                   ₹ {products.variants[0].discountedPrice}
                 </span>
-                {products.variants[0].price && 
-                 products.variants[0].price !== products.variants[0].discountedPrice && (
-                  <div className="flex items-center space-x-1 text-gray-500 text-sm">
-                    <span className="line-through">₹ {products.variants[0].price}</span>
-                    <span className="text-green-600 font-medium">
-                      ({Math.round(((products.variants[0].price - products.variants[0].discountedPrice) / products.variants[0].price) * 100)}% off)
-                    </span>
-                  </div>
-                )}
+                {products.variants[0].price &&
+                  products.variants[0].price !==
+                    products.variants[0].discountedPrice && (
+                    <div className="flex items-center space-x-1 text-gray-500 text-sm">
+                      <span className="line-through">
+                        ₹ {products.variants[0].price}
+                      </span>
+                      <span className="text-green-600 font-medium">
+                        (
+                        {Math.round(
+                          ((products.variants[0].price -
+                            products.variants[0].discountedPrice) /
+                            products.variants[0].price) *
+                            100,
+                        )}
+                        % off)
+                      </span>
+                    </div>
+                  )}
               </div>
             </div>
 
@@ -260,16 +271,20 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
             {/* Product Features */}
             <div className="space-y-2 lg:space-y-3 text-sm">
               <div>
-                <span className="font-medium">Tasting Notes</span> - Floral, Tart & Refreshing
+                <span className="font-medium">Quality</span> - Carefully sourced
+                and processed to maintain purity and freshness
               </div>
               <div>
-                <span className="font-medium">Caffeine</span> - Caffeine-Free
+                <span className="font-medium">Ingredients</span> - Made from
+                high-quality natural ingredients with no unnecessary additives
               </div>
               <div>
-                <span className="font-medium">Packaging</span> - Individually Enveloped Tea Bags
+                <span className="font-medium">Usage</span> - Suitable for daily
+                consumption and versatile for multiple uses
               </div>
               <div>
-                <span className="font-medium">Net Quantity</span> - 30 g
+                <span className="font-medium">Packaging</span> - Hygienically
+                packed to preserve flavor, aroma, and shelf life
               </div>
             </div>
           </div>
@@ -346,7 +361,9 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-700 text-sm lg:text-base">{review.comment}</p>
+                <p className="text-gray-700 text-sm lg:text-base">
+                  {review.comment}
+                </p>
               </div>
             ))}
           </div>
@@ -363,7 +380,11 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {otherProducts.slice(0, 4).map((item: Product) => (
-              <ProductCard key={item._id} product={item} isOtherProducts={true} />
+              <ProductCard
+                key={item._id}
+                product={item}
+                isOtherProducts={true}
+              />
             ))}
           </div>
         </div>
@@ -379,7 +400,7 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
             >
               <X className="w-6 h-6" />
             </button>
-            
+
             <div className="relative max-w-full max-h-full overflow-hidden">
               <Image
                 src={products.images[0].url}
@@ -387,15 +408,15 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
                 width={800}
                 height={800}
                 className="max-w-full max-h-full object-contain"
-                style={{ 
-                  maxWidth: '100vw', 
-                  maxHeight: '100vh',
-                  width: 'auto',
-                  height: 'auto'
+                style={{
+                  maxWidth: "100vw",
+                  maxHeight: "100vh",
+                  width: "auto",
+                  height: "auto",
                 }}
               />
             </div>
-            
+
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded">
               Pinch to zoom • Tap to close
             </div>

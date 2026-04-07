@@ -1,5 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,11 +23,15 @@ import {
   ChevronRight,
   CheckCircle2,
 } from "lucide-react";
-import { addUserDetails, useUserDetails } from "@/hooks/CustomHooks/auth";
+import { addUserDetails, editUserDetails, useUserDetails } from "@/hooks/CustomHooks/auth";
 import OtpModal from "@/components/layouts/otpModal";
 import { sendOtpReq } from "@/hooks/CustomHooks/otp";
 import { useCartStore } from "@/store/cartStore";
 import { useAllProducts } from "@/hooks/CustomHooks/useAllProducts";
+import { toastFailure, toastSuccess } from "@/utils/toast";
+import api from "@/lib/config/axios";
+import { createOrd } from "@/hooks/CustomHooks/orders";
+import { useRouter } from "next/navigation";
 
 const deliverySchema = z.object({
   address: z
@@ -80,14 +91,16 @@ const PaymentPage: React.FC = () => {
       deliveryMode: undefined,
     },
   });
-
-  const [delivarydetails, setDeliveryDetails] = useState<DeliveryFormData>();
+  const{mutate : creatOrder,data:orderData}=createOrd()
+  const {mutate:editUser}=editUserDetails()
+  //const [delivarydetails, setDeliveryDetails] = useState<DeliveryFormData>();
   const { data: userDetails, isLoading } = useUserDetails();
   const [showDeliveryService, setShowDeliveryService] = useState<Boolean>(true);
   const [otpModal, setOtpModal] = useState(false);
   const [deliveryCharge, setDeliveryCharge] = useState<number>();
   const { data: userData, isPending, mutate: addUser } = addUserDetails();
   const [discountApplied, setDiscountApplied] = useState(false);
+  const router = useRouter();
 
   const pincode = useWatch({ control, name: "pincode" });
   const deliveryMode = useWatch({ control, name: "deliveryMode" });
@@ -131,20 +144,150 @@ const PaymentPage: React.FC = () => {
     ? Math.round(baseSubtotal * 0.10)
     : 0;
 
+  // for tempoary use 
+
+  // const onSubmit = async (data: DeliveryFormData) => {
+  //   try {
+  //     const phone = data.mobile;
+  //     console.log(data);
+  //     setDeliveryDetails(data);
+  //     addUser({ data });
+  //     reset();
+  //     //sendOtp({ phone });
+  //     if (otpisError) console.log(otpError);
+  //     //setOtpModal(true);
+  //     startPayment()
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //   }
+  // };
+  
+
   const onSubmit = async (data: DeliveryFormData) => {
-    try {
-      const phone = data.mobile;
-      console.log(data);
-      setDeliveryDetails(data);
-      addUser({ data });
-      reset();
-      sendOtp({ phone });
-      if (otpisError) console.log(otpError);
-      setOtpModal(true);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+  try {
+    addUser({ data });
+    reset();
+    if (otpisError) console.log(otpError);
+    startPayment(data); 
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  }
+};
+
+  // const startPayment=async()=>
+  // {
+  //   const user = JSON.parse(localStorage.getItem("user-storage") as string);
+  //   const phone = user.state.data.user;  
+  //   const order= await api.post("create-order",{
+  //     amount:Subtotal
+  //   })
+  //   console.log(order)
+  //   // 2. Open Razorpay Checkout
+  //   const options = {
+  //     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
+  //     amount: order?.data?.data?.amount,
+  //     currency: order?.data?.data?.currency,
+  //     name: "Laridae",
+  //     description: "Tea order",
+  //     order_id: order?.data?.data?.id,
+  //     handler: async function (response: any,order_id:string) {
+  //       // 3. Verify payment on backend
+        
+  //       const verify= await api.post("/verify-payment",{
+  //         razorpay_order_id: response.razorpay_order_id,
+  //                      razorpay_payment_id: response.razorpay_payment_id,
+  //                      razorpay_signature: response.razorpay_signature,
+  //       })
+  //       console.log(verify)
+  //       if (verify?.data?.success) {
+  //         toastSuccess("Order Placed Successfullt")
+  //         useCartStore.getState().clearCart()
+
+  //          creatOrder({
+  //           phone:phone,
+  //           products:useCartStore.getState().cart,
+  //           deliveryDetails:delivarydetails,
+  //           totalAmount:Subtotal,
+  //           paymentDetails:{
+  //                      razorpay_order_id: response.razorpay_order_id,
+  //                      razorpay_payment_id: response.razorpay_payment_id,
+  //                      razorpay_signature: response.razorpay_signature,
+  //           }
+  //         })
+  //         const data = {
+  //           availFirstDiscount:false
+  //         }
+  //         editUser({data})
+  //         console.log(orderData)
+  //         router.push("/orders");
+  //       } else {
+  //         toastFailure("❌ Payment verification failed")
+  //       }
+  //     },
+  //     prefill: {
+  //       name: "Shyam",
+  //       email: "shyam@example.com",
+  //       contact: "9876543210",
+  //     },
+  //     theme: {
+  //       color: "#3399cc",
+  //     },
+  //   };
+
+  //   const rzp1 = new window.Razorpay(options);
+  //   rzp1.open();
+  // }
+
+  const startPayment = async (deliveryData: DeliveryFormData) => {  // ✅ accept param
+  const user = JSON.parse(localStorage.getItem("user-storage") as string);
+  const phone = user.state.data.user;
+
+  const order = await api.post("create-order", { amount: Subtotal });
+
+  const options = {
+    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    amount: order?.data?.data?.amount,
+    currency: order?.data?.data?.currency,
+    name: "Laridae",
+    description: "Tea order",
+    order_id: order?.data?.data?.id,
+    handler: async function (response: any) {
+      const verify = await api.post("/verify-payment", {
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      });
+
+      if (verify?.data?.success) {
+        const currentCart = useCartStore.getState().cart;
+
+        creatOrder({
+          phone: phone,
+          products: currentCart,        
+          deliveryDetails: deliveryData, 
+          totalAmount: Subtotal,
+          paymentDetails: {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          },
+        });
+
+        useCartStore.getState().clearCart(); 
+        editUser({ data: { availFirstDiscount: false } });
+        toastSuccess("Order Placed Successfully");
+        router.push("/orders");
+      } else {
+        toastFailure("❌ Payment verification failed");
+      }
+    },
+    prefill: { name: "Shyam", email: "shyam@example.com", contact: "9876543210" },
+    theme: { color: "#3399cc" },
   };
+
+  const rzp1 = new window.Razorpay(options);
+  rzp1.open();
+};
 
   const totalWeight = cartProducts.reduce((sum, prod) => {
     const rawWeight = prod?.product?.variants?.[0]?.weight;
@@ -502,9 +645,11 @@ const PaymentPage: React.FC = () => {
             </div>
           </div>
         </div>
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
       </div>
+      
 
-      {otpModal && (
+      {/* {otpModal && (
         <OtpModal
           isOpen={otpModal}
           onClose={onClose}
@@ -512,7 +657,7 @@ const PaymentPage: React.FC = () => {
           totalAmount={Subtotal}
           products={useCartStore.getState().cart}
         />
-      )}
+      )} */}
     </div>
   );
 };

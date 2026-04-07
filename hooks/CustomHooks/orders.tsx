@@ -7,7 +7,7 @@ import getQueryClient from "@/utils/queryClient";
 export const getMyOrders=()=>
 {
     return useQuery({
-        queryKey:["products"],
+        queryKey:["getOrders"],
         queryFn:()=>getOrders()
     })
 }
@@ -20,7 +20,7 @@ export const createOrd=()=>
         mutationFn:(payload:orderSchema)=>
             createOrder(payload),
         onSuccess:()=>{
-            queryClient.invalidateQueries({ queryKey: ["orders"] }),
+            queryClient.invalidateQueries({ queryKey: ["getOrders"] }),
             console.log("success")
         },
         
