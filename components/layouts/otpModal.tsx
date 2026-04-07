@@ -219,9 +219,9 @@ const handleVerify = () => {
         }
       },
       prefill: {
-        name: "Shyam",
-        email: "shyam@example.com",
-        contact: "9876543210",
+        name: "",
+        email: "",
+        contact: phone,
       },
       theme: {
         color: "#3399cc",

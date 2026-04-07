@@ -281,7 +281,7 @@ const PaymentPage: React.FC = () => {
         toastFailure("❌ Payment verification failed");
       }
     },
-    prefill: { name: "Shyam", email: "shyam@example.com", contact: "9876543210" },
+    prefill: { name: "", email: "", contact: phone },
     theme: { color: "#3399cc" },
   };
 
