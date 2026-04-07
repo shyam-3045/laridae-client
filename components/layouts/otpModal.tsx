@@ -160,7 +160,9 @@ const handleVerify = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user-storage") as string);
     const phone = user.state.data.user;
-    verifyOtp({ phone, otp: otpString }); 
+    //verifyOtp({ phone, otp: otpString }); 
+    startPayment();
+    onClose();
   } catch (error) {
     console.error("OTP verification failed:", error);
   }
