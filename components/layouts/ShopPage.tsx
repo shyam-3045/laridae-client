@@ -136,39 +136,7 @@ const ShopPage = ({ shopFlag }: Props) => {
     <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50">
         {/* Hero Section */}
-        <div className="relative bg-gradient-to-r from-white via-amber-50 to-orange-50 overflow-hidden">
-          <div className='absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23C5A572" fill-opacity="0.05"%3E%3Cpath d="M20 20c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10 10 4.5 10 10zm10 0c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10 10 4.5 10 10z"/%3E%3C/g%3E%3C/svg%3E")] opacity-30'></div>
-          <div className="relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-              <div className="text-center">
-                <div className="mb-6">
-                  <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-[#C5A572] to-amber-500 text-white text-sm font-semibold tracking-wider uppercase shadow-lg">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    Premium Collection
-                  </span>
-                </div>
-                <h1 className="text-5xl md:text-6xl font-light text-transparent bg-clip-text bg-gradient-to-r from-[#C5A572] via-amber-600 to-orange-500 mb-6 tracking-tight">
-                  All Products
-                </h1>
-                <div className="max-w-3xl mx-auto">
-                  <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-light mb-8">
-                    Explore a wide selection of teas & spices, from authentic
-                    blends to single-origin spices.
-                  </p>
-                  <div className="flex justify-center">
-                    <div className="h-1 w-32 bg-gradient-to-r from-[#C5A572] to-amber-500 rounded-full"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Bulk Order Banner - Static, Simple & Professional */}
         <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 border-y border-amber-200/50">
