@@ -5,13 +5,13 @@ const StatsSection = () => {
   const stats = [
     {
       icon: Users,
-      number: "100,000+",
+      number: "1000+",
       label: "Happy Customers",
       description: "Satisfied customers worldwide"
     },
     {
       icon: ShoppingBag,
-      number: "1000+",
+      number: "100,000+",
       label: "Orders Delivered",
       description: "Successfully completed orders"
     },
