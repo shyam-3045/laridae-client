@@ -198,10 +198,7 @@ const SingleProducts = ({ products, isLoading, allProducts }: Params) => {
               {products.Overview}
             </div>
 
-            {/* Biodegradable Info */}
-            <div className="text-yellow-600 font-medium text-sm lg:text-base">
-              Plant-Based Biodegradable Pyramid Bags
-            </div>
+            
 
             {/* Price Section */}
             <div className="space-y-2">
