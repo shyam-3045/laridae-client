@@ -19,6 +19,8 @@ type FilterState = {
   [key: string]: boolean;
 };
 
+const FEATURED_PRODUCT_ID = "69d64af8f51b6175591e026d";
+
 const ShopPage = ({ shopFlag }: Props) => {
   const { data: products, isLoading } = useAllProducts();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -30,8 +32,9 @@ const ShopPage = ({ shopFlag }: Props) => {
     FlowerBasedTea: false,
     LaridaeCoffee: false,
   });
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  console.log(products)
+  console.log(products);
 
   useEffect(() => {
     if (!products?.data) return;
@@ -81,6 +84,13 @@ const ShopPage = ({ shopFlag }: Props) => {
 
     setFilteredProducts(newFilteredProducts);
   }, [filter, originalProducts]);
+
+  // Sort: featured product first, rest as usual
+  const sortedProducts = filteredProducts.slice().sort((a, b) => {
+    if (a._id === FEATURED_PRODUCT_ID) return -1;
+    if (b._id === FEATURED_PRODUCT_ID) return 1;
+    return 0;
+  });
 
   const filterOptions = [
     { name: "Asafoetida", id: 1 },
@@ -132,13 +142,43 @@ const ShopPage = ({ shopFlag }: Props) => {
     );
   }
 
+  const FilterList = () => (
+    <div className="space-y-1">
+      {filterOptions?.map((item) => (
+        <div key={item.id} className="group">
+          <div className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-300 border border-transparent hover:border-amber-200/50">
+            <div className="flex items-center space-x-3">
+              <div className="h-2 w-2 rounded-full bg-gradient-to-r from-[#C5A572] to-amber-500 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+              <h3 className="text-base font-medium text-gray-800 group-hover:text-[#C5A572] transition-colors duration-200">
+                {item.name === "Laridae"
+                  ? "Laridae Tea"
+                  : item.name === "GramFlour"
+                  ? "Gram Flour"
+                  : item.name === "LaridaeCoffee"
+                  ? "Laridae Coffee"
+                  : item.name}
+              </h3>
+            </div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={filter[item.name] || false}
+                onChange={() =>
+                  handleFilterChange(item.name as keyof FilterState)
+                }
+                className="h-4 w-4 text-[#C5A572] focus:ring-[#C5A572] focus:ring-offset-2 border-gray-300 rounded cursor-pointer transition-all duration-200 hover:border-[#C5A572]"
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50">
-        {/* Hero Section */}
-        
-
-        {/* Bulk Order Banner - Static, Simple & Professional */}
+        {/* Bulk Order Banner */}
         <div className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 border-y border-amber-200/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -153,13 +193,15 @@ const ShopPage = ({ shopFlag }: Props) => {
                   </svg>
                 </div>
                 <div className="text-left">
-                  <p className="text-sm text-white font-medium">Need to order in bulk?</p>
+                  <p className="text-sm text-white font-medium">
+                    Need to order in bulk?
+                  </p>
                   <p className="text-lg sm:text-xl font-semibold text-gray-800">
                     Contact our Sales Team
                   </p>
                 </div>
               </div>
-              
+
               <button
                 onClick={handleBulkOrderClick}
                 className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#C5A572] to-amber-500 hover:from-amber-600 hover:to-orange-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
@@ -180,47 +222,64 @@ const ShopPage = ({ shopFlag }: Props) => {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Sidebar */}
+            {/* Filters */}
             {shopFlag === 4 ? null : (
               <div className="w-full lg:w-72 lg:flex-shrink-0">
-                <div className="bg-white/90 backdrop-blur-sm lg:sticky lg:top-8 rounded-xl shadow-xl border border-amber-100/60 p-6">
+                {/* Mobile: collapsible dropdown */}
+                <div className="lg:hidden">
+                  <button
+                    onClick={() => setFiltersOpen((prev) => !prev)}
+                    className="w-full flex items-center justify-between px-5 py-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-amber-100/60 text-[#C5A572] font-semibold text-lg"
+                  >
+                    <div className="flex items-center gap-2">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+                        />
+                      </svg>
+                      Filters
+                    </div>
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        filtersOpen ? "rotate-180" : "rotate-0"
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {filtersOpen && (
+                    <div className="mt-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl border border-amber-100/60 p-4">
+                      <FilterList />
+                    </div>
+                  )}
+                </div>
+
+                {/* Desktop: sticky sidebar (unchanged) */}
+                <div className="hidden lg:block bg-white/90 backdrop-blur-sm lg:sticky lg:top-8 rounded-xl shadow-xl border border-amber-100/60 p-6">
                   <div className="flex items-center mb-6">
                     <div className="h-8 w-1 bg-gradient-to-b from-[#C5A572] to-amber-500 rounded-full mr-3"></div>
                     <h2 className="text-xl font-semibold text-[#C5A572] tracking-wide">
                       Filters
                     </h2>
                   </div>
-
-                  <div className="space-y-1">
-                    {filterOptions?.map((item) => (
-                      <div key={item.id} className="group">
-                        <div className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-300 border border-transparent hover:border-amber-200/50">
-                          <div className="flex items-center space-x-3">
-                            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-[#C5A572] to-amber-500 opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                            <h3 className="text-base font-medium text-gray-800 group-hover:text-[#C5A572] transition-colors duration-200">
-                              {item.name === "Laridae"
-                                ? "Laridae Tea"
-                                : item.name === "GramFlour"
-                                ? "Gram Flour"
-                                : item.name === "LaridaeCoffee"
-                                ? "Laridae Coffee"
-                                : item.name}
-                            </h3>
-                          </div>
-                          <div className="relative">
-                            <input
-                              type="checkbox"
-                              checked={filter[item.name] || false}
-                              onChange={() =>
-                                handleFilterChange(item.name as keyof FilterState)
-                              }
-                              className="h-4 w-4 text-[#C5A572] focus:ring-[#C5A572] focus:ring-offset-2 border-gray-300 rounded cursor-pointer transition-all duration-200 hover:border-[#C5A572]"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <FilterList />
                 </div>
               </div>
             )}
@@ -257,16 +316,30 @@ const ShopPage = ({ shopFlag }: Props) => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                {filteredProducts?.map((product: Product) => (
-                  <div
-                    key={product._id}
-                    className="group transform hover:scale-105 transition-all duration-300"
-                  >
-                    <div className="h-full bg-white rounded-xl shadow-lg hover:shadow-2xl border border-gray-100 hover:border-amber-200 transition-all duration-300 overflow-hidden">
-                      <ProductCard product={product} />
+                {sortedProducts?.map((product: Product) => {
+                  const isFeatured = product._id === FEATURED_PRODUCT_ID;
+                  return (
+                    <div
+                      key={product._id}
+                      className="group transform hover:scale-105 transition-all duration-300"
+                    >
+                      <div
+                        className={`relative h-full bg-white rounded-xl shadow-lg hover:shadow-2xl border transition-all duration-300 overflow-hidden ${
+                          isFeatured
+                            ? "border-[#C5A572]/50"
+                            : "border-gray-100 hover:border-amber-200"
+                        }`}
+                      >
+                        {isFeatured && (
+                          <span className="absolute top-2 left-2 z-10 text-[10px] font-semibold text-[#C5A572] bg-amber-50 border border-[#C5A572]/30 px-2 py-0.5 rounded-full tracking-wide">
+                            ★ Featured
+                          </span>
+                        )}
+                        <ProductCard product={product} />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {(!filteredProducts || filteredProducts?.length === 0) && (

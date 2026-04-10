@@ -29,7 +29,7 @@ export default async function Home() {
       <Link href={'/shop'}>
       <HeroSection />
       </Link>
-      <DiscountModel/>      
+      {/*<DiscountModel/>*/}      
       <AnnouncementBar />
       <AnimatedOnScroll>
         <WhyChooseUs/>
