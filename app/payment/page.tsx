@@ -407,7 +407,7 @@ const PaymentPage: React.FC = () => {
                       }`}
                     >
                       <Truck size={17} />
-                      Courier
+                      Courier (Door Step Delivery)
                     </button>
                   </div>
                 </div>

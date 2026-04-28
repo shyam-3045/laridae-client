@@ -85,7 +85,6 @@ const ShopPage = ({ shopFlag }: Props) => {
     setFilteredProducts(newFilteredProducts);
   }, [filter, originalProducts]);
 
-  // Sort: featured product first, rest as usual
   const sortedProducts = filteredProducts.slice().sort((a, b) => {
     if (a._id === FEATURED_PRODUCT_ID) return -1;
     if (b._id === FEATURED_PRODUCT_ID) return 1;
