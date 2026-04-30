@@ -377,7 +377,7 @@ const PaymentPage: React.FC = () => {
                     placeholder="9876543210"
                     maxLength={10}
                   />
-                  {errors.mobile && <p className="text-red-500 text-xs mt-1">{errors.mobile.message}</p>}
+                  {errors.mobile &&  <p className="text-red-500 text-xs mt-1">{errors.mobile.message}</p>}
                 </div>
               </div>
 
